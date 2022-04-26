@@ -40,6 +40,7 @@ export default function Individual({navigation, route}) {
 
         update(ref(db, ROOT_REF + index), saveData)
         .then(() => {
+            // navigation.goBack();
             navigation.navigate('Home'); // Data saved successfully!
           })
           .catch((error) => {
@@ -51,6 +52,7 @@ export default function Individual({navigation, route}) {
     useEffect(() => {
         if (!inProgress) {
             navigation.navigate('Home');
+            // navigation.goBack();
         }
     }, [inProgress])
 
@@ -73,6 +75,8 @@ export default function Individual({navigation, route}) {
       function removeThisCow() {
         db.ref(ROOT_REF + index).remove();
         navigation.navigate('Home');
+        // navigation.goBack();
+
         return;
       }
 

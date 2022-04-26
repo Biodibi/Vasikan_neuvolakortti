@@ -7,6 +7,7 @@ import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
 import calfHead from '../icons/calfHead.png';
 import cow from '../icons/cow.png';
+import searchBlack from '../icons/search-black.png';
 
 export default function Home({navigation}) {
   const [cowList, setCowList] = useState({});
@@ -106,21 +107,24 @@ export default function Home({navigation}) {
             <Text style={styles.overviewText}>SAIRAITA</Text>
             </TouchableOpacity>
           </View>
-         {/*  <View style={styles.overviewTotal}>
-            <View style={styles.overviewCircle} >
-              <Text style={styles.overviewCount}>0</Text>
-            </View>
-            <Text style={styles.overviewText}>HOIDOSSA</Text>
-          </View> */}
-          
-          {/* <Text style={styles.overviewText}>Tietokannassa on {cowKeys.length} vasikkaa.</Text> */}
+       
     </View>
     
     {/* <TouchableOpacity style={styles.grayButton} onPress={() => confirmDeleteAll()}>
         <Text style={styles.buttonText}>Tyhjennä tietokanta</Text>
     </TouchableOpacity> */}
 
-    <Text style={{marginTop: 10, marginBottom: 5, marginLeft: 15, fontSize: 15}}>Kaikki vasikat</Text>
+    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: 15}}>
+      <Text  style={styles.subHeader}>Kaikki vasikat</Text>
+      <TouchableOpacity 
+        onPress={() => navigation.navigate('List',{searchActive: true, cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}
+        style={styles.homeSearchBg}>
+        <Text style={{color: 'black', fontSize: 13, marginRight: 5, marginLeft: 2}}>Haku</Text>
+        <Image source={searchBlack} 
+          style={{width: 20, height: 20}}
+          />
+      </TouchableOpacity>
+    </View>
 
 
 

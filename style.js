@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     subHeader: {
-      fontSize: 15,
+      fontSize: 16,
+      color: '#001f15'
     },
     contentContainer: {
       marginBottom: 85,
@@ -126,6 +127,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         justifyContent: 'center'
+    },
+    homeSearchBg: {
+        position: 'absolute', 
+        right: 15, 
+        backgroundColor:'#9be8b2',
+        padding: 10,
+        borderRadius: 25,
+        flexDirection: 'row'
     }
 })
 

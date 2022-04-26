@@ -74,7 +74,10 @@ export default function App() {
           component={List}
           options={{
             title: "List",
-            headerTitle: "Vasikat"
+            headerTitle: "Vasikat",
+            headerRight: () => (
+              <AddButton />
+          ),
           }} 
         />
 
