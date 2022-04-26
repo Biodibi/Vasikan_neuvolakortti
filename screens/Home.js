@@ -115,7 +115,9 @@ export default function Home({navigation}) {
     </TouchableOpacity> */}
 
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: 15}}>
-      <Text  style={styles.subHeader}>Kaikki vasikat</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}>
+              <Text  style={styles.subHeader}>Kaikki vasikat</Text>
+      </TouchableOpacity>
       <TouchableOpacity 
         onPress={() => navigation.navigate('List',{searchActive: true, cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}
         style={styles.homeSearchBg}>

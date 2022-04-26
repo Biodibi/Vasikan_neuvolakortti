@@ -100,12 +100,16 @@ export default function List({route, navigation}) {
                     onBlur={() => setSearchBoxActive(false)}
                     />
                     {searchBoxActive ? 
-                    <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
+                    <>
+                    {search.length > 0 ? 
+                        <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
                         <Image source={CircledCross} 
                         style={{width: 18, height: 18}}
                         />
                         <Text style={{fontSize: 10}}>TYHJENNÄ</Text>
                     </TouchableOpacity>
+                    : null}
+                    </>
                     : 
                     <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
                         <Image source={searchGray} 
