@@ -10,6 +10,8 @@ import cow from '../icons/cow.png';
 
 export default function Home({navigation}) {
   const [cowList, setCowList] = useState({});
+  const [sickCows, setSickCows] = useState({});
+
   const [loadingStatus, setLoadingStatus] = useState(true); 
   const [microphoneOn, setMicrophoneOn] = useState(true);
 
@@ -24,6 +26,31 @@ export default function Home({navigation}) {
     }
   }, []);
 
+  useEffect(() => {
+    let copy = {...cowList};
+    //  alert(JSON.stringify(copy));
+      for (let i = 0; i < cowKeys.length; i++) {
+          // cowKeys[i] each key
+          if (cowList[cowKeys[i]].temperature !== null) {
+              if (cowList[cowKeys[i]].temperature !== "") { 
+                // ... some temperature was given...
+              let current = copy[cowKeys[i]].temperature.toString().replace(/,/g, '.');
+              let currentNumber = Number(current);
+              if ((currentNumber >= 38.5) && (currentNumber <= 39.5)) { // is temperature healthy?
+                  delete copy[cowKeys[i]];
+                 // alert(cowKeys[i])
+              }
+            } else { 
+              // ... temperature was not given
+              delete copy[cowKeys[i]]; 
+            }
+      }
+      }
+      setSickCows(copy);
+      //setSickCows(sick);
+  }, [cowList])
+
+  let sickKeys = Object.keys(sickCows).sort();
   let cowKeys = Object.keys(cowList).sort();
 
   // user clicked 'remove all'; asking for confirmation first
@@ -62,7 +89,7 @@ export default function Home({navigation}) {
           <Image source={cow} style={styles.overviewImage}/>    
           
           <View style={styles.overviewTotal}>
-            <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, currentTab: 'all'})}>
+            <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}>
               <View style={styles.overviewCircle} >
                 <Text style={styles.overviewCount}>{cowKeys.length}</Text>
               </View>
@@ -71,21 +98,20 @@ export default function Home({navigation}) {
             
           </View>
 
-        {/* Hardcoded for now, can add functionality later */}
           <View style={styles.overviewTotal}>
-          <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, currentTab: 'sick'})}>
+          <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'sick', microphoneOn: microphoneOn})}>
             <View style={styles.overviewCircle} >
-              <Text style={styles.overviewCount}>0</Text>
+              <Text style={styles.overviewCount}>{sickKeys.length}</Text>
             </View>
             <Text style={styles.overviewText}>SAIRAITA</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.overviewTotal}>
+         {/*  <View style={styles.overviewTotal}>
             <View style={styles.overviewCircle} >
               <Text style={styles.overviewCount}>0</Text>
             </View>
             <Text style={styles.overviewText}>HOIDOSSA</Text>
-          </View>
+          </View> */}
           
           {/* <Text style={styles.overviewText}>Tietokannassa on {cowKeys.length} vasikkaa.</Text> */}
     </View>

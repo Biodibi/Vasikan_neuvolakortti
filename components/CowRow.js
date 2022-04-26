@@ -10,19 +10,12 @@ export const CowRow = ({cowNumber, cowName, temperature}) => {
     }
 
     return (
-      /*  <View style={styles.row}>
-            <Text style={styles.rowText}>
-            <Text style={{fontWeight: 'bold'}}>{cowNumber}</Text>
-            {cowName ? ' ⋯ "' + cowName + '"': null}
-            {temperature ? " ⋯ Ruumiinlämpö: " + temperature + "°C" : null} ‣
-           </Text>
-        </View>    */
         <View style={styles.row}>
             <View style={styles.col1}>
                 <Text style={{fontWeight: 'bold', color: 'black'}}>{cowNumber}</Text>
             </View>
             <View style={styles.col2}>
-                {cowName ? <Text>Nimi: {cowName}</Text> : null}
+                {cowName ? <Text style={{color: 'black'}}>"{cowName}"</Text> : null}
                 {temperature ? <Text>Ruumiinlämpö: {temperature} °C</Text> : null} 
             </View>
             <View style={styles.col3}>

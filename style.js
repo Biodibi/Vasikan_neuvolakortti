@@ -88,9 +88,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#edf2ee',
         borderRadius: 45,
         alignSelf: 'center',
-        //borderWidth: 4,
-       // borderColor: '#a6baaa' 
-       // borderColor: '#e8ede9' 
     },
     overview: {
         flexDirection: 'row',
@@ -122,9 +119,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'black',
         fontWeight: 'bold',
-        // borderRadius: 40,
-        // borderWidth: 0.5,
-        // padding: 15,
     },
     overviewTotal: {
         width: 70,
