@@ -26,12 +26,14 @@ const styles = StyleSheet.create({
       color: '#001f15'
     },
     contentContainer: {
-      marginBottom: 85,
+      marginBottom: 45,
       padding: 10,
-      backgroundColor: '#e8ede9',
+      backgroundColor: '#e6ffd6',
+    //  borderColor: '#066127',
+    // borderWidth: 2,
       borderRadius: 10,
       shadowColor: 'black',
-        elevation: 10,
+      elevation: 10,
     },
     emptyDatabaseView: {
         marginBottom: 70,
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
         width: 90,
         height: 90,
         marginRight: 10,
-        backgroundColor: '#edf2ee',
+     //   backgroundColor: '#edf2ee',
         borderRadius: 45,
         alignSelf: 'center',
     },
@@ -94,7 +96,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 5,
         alignItems: 'center',
-        backgroundColor: '#e8ede9',
+        // backgroundColor: '#e8ede9',
+        backgroundColor: '#e6ffd6',
         borderRadius: 20,
         shadowColor: 'black',
         elevation: 10,
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     overviewCircle: {
         borderWidth: 1,
         borderRadius: 25,
-        borderColor: '#9cb8a8',
+        borderColor: '#87d477',
         alignContent: 'center',
         justifyContent: 'center',
         height: 50,
@@ -131,10 +134,12 @@ const styles = StyleSheet.create({
     homeSearchBg: {
         position: 'absolute', 
         right: 15, 
-        backgroundColor:'#9be8b2',
+        backgroundColor:'#82d196',
         padding: 10,
         borderRadius: 25,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        shadowColor: 'black',
+        elevation: 2,
     }
 })
 

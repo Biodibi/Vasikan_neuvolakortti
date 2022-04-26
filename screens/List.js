@@ -279,8 +279,7 @@ const style= StyleSheet.create({
         backgroundColor: '#fff',
         padding: 3,
         borderTopWidth: 1, 
-        borderColor: '#b8b8b8'
-
+        borderColor: '#b8b8b8',
     },
     searchBox: {
         backgroundColor: 'white',
@@ -299,5 +298,9 @@ const style= StyleSheet.create({
     searchText: {
         color: 'black',
         fontSize: 16
+    },
+    listBg: {
+        flex: 1,
+        marginBottom: 20
     }
 })

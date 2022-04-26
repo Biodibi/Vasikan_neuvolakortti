@@ -3,6 +3,7 @@ import React from "react";
 import microphoneOn from '../icons/microphone-on.png';
 import microphoneOff from '../icons/microphone-off.png';
 import microphoneOffWhite from '../icons/microphone-off-white.png';
+import microphoneOffBlack from '../icons/microphone-off-black.png';
 import microphoneOnWhite from '../icons/microphone-on-white.png';
 
   
@@ -18,7 +19,7 @@ const MicFAB = (props) => {
         return (
             <TouchableOpacity style={styles.container}
             onPress={props.onPress}>
-            <Image style={styles.FABicon} source={microphoneOffWhite}/>
+            <Image style={styles.FABicon} source={microphoneOffBlack}/>
             </TouchableOpacity>
         )
     }
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: 40,
         position: "absolute",
         bottom: 15,
-        left: 20,
+        right: 20,
         backgroundColor: "#02ab56",
         paddingHorizontal: 20,
         paddingVertical: 20,

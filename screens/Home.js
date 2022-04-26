@@ -87,7 +87,7 @@ export default function Home({navigation}) {
       <>
       {/* CALF LIST */}
     <View style={styles.overview}>
-          <Image source={cow} style={styles.overviewImage}/>    
+          <Image source={calfHead} style={styles.overviewImage}/>    
           
           <View style={styles.overviewTotal}>
             <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}>
@@ -134,7 +134,7 @@ export default function Home({navigation}) {
       <ScrollView style={styles.contentContainer}>
       {
         cowKeys.map(key => ( 
-        <View key={key} style={{ borderBottomWidth: 1, borderColor: '#86a68e'}}>
+        <View key={key} style={{ borderBottomWidth: 1, borderColor: '#87d477'}}>
           <TouchableOpacity 
           onPress={() => navigation.navigate('Individual', {cow: cowList[key], key: [key]})}>
               <CowRow 
@@ -148,6 +148,8 @@ export default function Home({navigation}) {
         </View>
         ))
         }
+        <View style={{height: 11}} /> 
+        {/* ^ Some padding to bottom, otherwise last row is cropped a little */}
         </ScrollView> : (
         <Text style={styles.emptyDatabaseView}>Tietokanta on tyhjä.</Text>
       )}
