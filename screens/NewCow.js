@@ -43,14 +43,11 @@ export default function Home({navigation, route}) {
     let cowNumber = (number.trim());
     if (cowNumber.length === 4) {
      if (!isNaN(Number(cowNumber))) {
-        //alert('This is a 4-digit number');
         return true; // number format is correct (four numbers)
       } else {
-        //alert('This field can only contain numbers.');
         return false;
       }
     } else {
-      //alert('The cow number must have 4 digits.');
       return false;
     }
   }
@@ -68,13 +65,15 @@ export default function Home({navigation, route}) {
     if (cowNumber.trim() !== '') {
       // then if number format is incorrect, program is halted
         if (checkCorrectFormat(cowNumber) === false) {
-          alert('Tarkista korvanumero. Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.');
+          // alert('Tarkista korvanumero. Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.');
+          Alert.alert("Tarkista korvanumero","Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.",[{ text: "OK" }]);
           return;
         }
       // proceeding (cow number format is correct)
       // checking if this cow already exists (to prevent overwriting)
         if (checkIfExists(cowNumber) === true) {
-            alert('Tämä vasikka on jo tietokannassa. Jos haluat muokata olemassa olevan vasikan tietoja, etsi ko. vasikka listasta, tai vaihtoehtoisesti skannaa tai sanele korvanumero.');
+            // alert('Tämä vasikka on jo tietokannassa. Jos haluat muokata olemassa olevan vasikan tietoja, etsi ko. vasikka listasta, tai vaihtoehtoisesti skannaa tai sanele korvanumero.');
+            Alert.alert("Tämä vasikka on jo tietokannassa","Jos haluat muokata olemassa olevan vasikan tietoja, etsi ko. vasikka listasta, tai vaihtoehtoisesti skannaa tai sanele korvanumero.",[{ text: "OK" }]);
             return;
         } else {
           // Json parse used to prevent sending undefined values to database (undefined is not allowed)
@@ -92,7 +91,9 @@ export default function Home({navigation, route}) {
             alert (error)   // The write failed...
           });
         }
-      }  
+      }  else {
+        Alert.alert("Korvanumero vaaditaan","Et voi jättää tätä kenttää tyhjäksi.",[{ text: "OK" }]);
+      }
         
           
     }

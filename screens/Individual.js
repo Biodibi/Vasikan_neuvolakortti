@@ -28,7 +28,7 @@ export default function Individual({navigation, route}) {
                 setTemperature(route.params?.cow.temperature);
                 setIndex(route.params?.key);
             } else {
-                alert('Virhe. Vasikan tietoja ei voitu noutaa.');
+                Alert.alert("Virhe","Vasikan tietojen haku epäonnistui.",[{ text: "OK", onPress: () => navigation.navigate("Home") }]);
             }
         }, [])
     

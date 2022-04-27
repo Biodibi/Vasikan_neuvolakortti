@@ -140,6 +140,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         shadowColor: 'black',
         elevation: 2,
+    },
+    FABarea: {
+        flexDirection: 'row'
     }
 })
 

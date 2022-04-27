@@ -160,7 +160,6 @@ export default function Home({navigation}) {
         <Text style={styles.buttonText}>Camera</Text>
     </TouchableOpacity> */}
 
-    
       <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
       <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
         onPress={() => setMicrophoneOn(!microphoneOn)} />

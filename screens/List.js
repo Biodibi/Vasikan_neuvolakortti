@@ -8,6 +8,9 @@ import CameraFAB from '../components/CameraFAB';
 import searchGray from '../icons/search-lightgray.png';
 import crossLightGrey from '../icons/cross-lightgrey.png';
 import CircledCross from '../icons/circled-cross-gray.png';
+import CircledCrossWhite from '../icons/circled-cross-white.png';
+import CircledCrossBlack from '../icons/circled-cross-black.png';
+import searchGreen from '../icons/search-green.png';
 
 export default function List({route, navigation}) {
     // set these inside useeffect; initially null
@@ -71,29 +74,16 @@ export default function List({route, navigation}) {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={{flex: 1, backgroundColor: 'white'}}>
-            <View style={style.tabheader}>
-
-                    <Pressable  
-                      style={ currentTab=='all' ? style.activeTab : style.inactiveTab}
-                      onPress={() => toggleTab(all)}
-                    >
-                        <Text style={style.tabText}>KAIKKI</Text>
-                    </Pressable>
-        
-                    <Pressable
-                     style={ currentTab=='all' ? style.inactiveTab : style.activeTab}
-                     onPress={() => toggleTab(sick)}
-                    >
-                        <Text style={style.tabText}>SAIRAAT</Text>
-                    </Pressable>
-
-            </View>  
-            <View style={style.searchBox}>
-                <TextInput ref={textInputRef}
+        <View style={{flex: 1, backgroundColor: 'white'}}> 
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+            <Image source={searchGreen}  style={{width: 40, height: 40}} /> 
+                <View style={style.searchBox}>
+                
+                    <TextInput ref={textInputRef}
                     value={search} style={style.searchText}
                     onChangeText={text => setSearch(text)}
                     placeholder='Hae korvanumerolla...'
+                    placeholderTextColor='black'
                     returnKeyType='search'
                     maxLength={4} keyboardType='numeric'
                     onFocus={() => setSearchBoxActive(true)}
@@ -103,24 +93,44 @@ export default function List({route, navigation}) {
                     <>
                     {search.length > 0 ? 
                         <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
-                        <Image source={CircledCross} 
+                        <Image source={CircledCrossBlack} 
                         style={{width: 18, height: 18}}
                         />
-                        <Text style={{fontSize: 10}}>TYHJENNÄ</Text>
+                        <Text style={{fontSize: 10, color: 'black'}}>TYHJENNÄ</Text>
                     </TouchableOpacity>
                     : null}
                     </>
                     : 
-                    <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
+                    null
+                   /*  <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
                         <Image source={searchGray} 
                         style={{width: 20, height: 20}}
                         />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */
                     }
                     
                     
                     
+                </View>
             </View>
+            <View style={style.tabheader}>
+
+                    <Pressable  
+                      style={ currentTab=='all' ? style.activeTab : style.inactiveTab}
+                      onPress={() => toggleTab(all)}
+                    >
+                        <Text style={style.tabText}>KAIKKI</Text>
+                    </Pressable>
+                    <View style={style.space}/>
+                    <Pressable
+                     style={ currentTab=='all' ? style.inactiveTab : style.activeTab}
+                     onPress={() => toggleTab(sick)}
+                    >
+                        <Text style={style.tabText}>SAIRAAT</Text>
+                    </Pressable>
+
+            </View>  
+            
            
             {/* <Text>{JSON.stringify(searchList)}</Text>
             <Text>{JSON.stringify(sickKeys)}</Text> */}
@@ -135,7 +145,7 @@ export default function List({route, navigation}) {
             {searchList.length > 0 ? 
                 <>
                 {searchList.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#b8b8b8'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -158,7 +168,7 @@ export default function List({route, navigation}) {
                {cowKeys.length > 0 ? 
                 <>
                 {cowKeys.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#b8b8b8'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -189,7 +199,7 @@ export default function List({route, navigation}) {
             {searchList.length > 0 ? 
                 <>
                 {searchList.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#b8b8b8'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -209,7 +219,7 @@ export default function List({route, navigation}) {
             {sickKeys.length > 0 ? 
                  <>
                 {sickKeys.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#b8b8b8'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: sickCows[key], key: [key]})}>
                         <CowRow 
@@ -249,7 +259,7 @@ const style= StyleSheet.create({
     },
     tabText: {
         fontSize: 20,
-        color: 'black'
+        color: 'white'
     },
     tabItem: {
         marginHorizontal: 15,
@@ -257,7 +267,8 @@ const style= StyleSheet.create({
     },
    
     activeTab: {
-     backgroundColor: '#9be8b2',
+     //backgroundColor: '#9be8b2',
+     backgroundColor: '#408f57',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -267,7 +278,8 @@ const style= StyleSheet.create({
 
     },
     inactiveTab: {
-        backgroundColor: '#e6e6e6',
+       // backgroundColor: '#e6e6e6',
+       backgroundColor: '#7ac484',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -280,27 +292,36 @@ const style= StyleSheet.create({
         padding: 3,
         borderTopWidth: 1, 
         borderColor: '#b8b8b8',
+        marginBottom: 20
     },
     searchBox: {
-        backgroundColor: 'white',
-        borderColor: 'lightgray',
-        borderWidth: 2,
-        borderRadius: 10,
+      //  backgroundColor: 'white',
+        //borderColor: 'lightgray',
+        //borderColor:'#5a856b',
+        backgroundColor: '#7ac484',
+     //   borderWidth: 2,
+        borderRadius: 9,
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginVertical: 13,
-        marginHorizontal: 15
+        marginVertical: 5,
+        marginHorizontal: 5,
+        width: 250
     },
     searchResultText: {
         paddingLeft: 15
     },
     searchText: {
         color: 'black',
-        fontSize: 16
+        fontSize: 17.5
     },
     listBg: {
         flex: 1,
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor: '#fff'
+    },
+    space: {
+        width: 2,
+        backgroundColor: '#19592b'
     }
 })
