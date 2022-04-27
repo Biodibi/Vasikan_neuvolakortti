@@ -18,17 +18,20 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
-        borderRadius: 40,
+       // borderRadius: 40,
+        borderRadius: 20,
         position: "absolute",
         bottom: 15,
-        right: 110,
+        // right: 110,
+        right: 80,
         backgroundColor: "#02ab56",
         paddingHorizontal: 20,
         paddingVertical: 20,
         shadowColor: 'black',
         elevation: 7,
         height: 75,
-        width: 75
+        //width: 75,
+        width: 90,
     },
     title: {
         fontSize: 18,

@@ -16,7 +16,7 @@ export const CowRow = ({cowNumber, cowName, temperature}) => {
             </View>
             <View style={styles.col2}>
                 {cowName ? <Text style={{color: 'black'}}>"{cowName}"</Text> : null}
-                {temperature ? <Text style={{color: 'black'}}>Ruumiinlämpö: {temperature} °C</Text> : null} 
+                {temperature ? <Text style={{color: '#616161'}}>Ruumiinlämpö: {temperature} °C</Text> : null} 
             </View>
             <View style={styles.col3}>
                <Text style={styles.arrow}> ...  ‣</Text> 
@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     arrow: {
-        fontSize: 20
+        fontSize: 20,
+        color: '#616161'
     }
 })
