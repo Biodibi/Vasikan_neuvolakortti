@@ -6,7 +6,6 @@ import styles from '../style'
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
 import calfHead from '../icons/calfHead.png';
-import cow from '../icons/cow.png';
 import searchBlack from '../icons/search-black.png';
 
 export default function Home({navigation}) {

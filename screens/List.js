@@ -5,10 +5,6 @@ import { CowRow } from '../components/CowRow';
 import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
-import searchGray from '../icons/search-lightgray.png';
-import crossLightGrey from '../icons/cross-lightgrey.png';
-import CircledCross from '../icons/circled-cross-gray.png';
-import CircledCrossWhite from '../icons/circled-cross-white.png';
 import CircledCrossBlack from '../icons/circled-cross-black.png';
 import searchGreen from '../icons/search-green.png';
 

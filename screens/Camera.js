@@ -3,8 +3,7 @@ import {View, Text, StyleSheet, TouchableOpacity, Alert, Image, ActivityIndicato
 import {db, ROOT_REF} from '../firebase/Config';
 import { RNCamera } from 'react-native-camera';
 import { useCamera } from 'react-native-camera-hooks';
-import cameraWhite from '../icons/camera-white.png';
-import exclamationMark from '../icons/exclamation-mark.png';
+import scan from '../icons/scan.png';
 import TextRecognition from 'react-native-text-recognition';// <- npm install react-native-text-recognition@ml 
                                                             // !!! Without @ml this doesn't work
 
@@ -162,7 +161,7 @@ export default function Camera({navigation, route}) {
           <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
             <View style={styles.button} >
               {/* <Text style={styles.buttonText}>Havaitse</Text> */}
-              <Image source={cameraWhite} style={styles.camera}/>
+              <Image source={scan} style={styles.camera}/>
             </View>
           </View>
         </TouchableOpacity>
@@ -207,8 +206,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   camera: {
-     width:55,
-    height: 45,
+    width:58,
+    height: 55,
     margin: 10
   }
    

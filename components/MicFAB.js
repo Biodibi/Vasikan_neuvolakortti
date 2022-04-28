@@ -1,10 +1,7 @@
 import { TouchableOpacity, StyleSheet, Text, Image } from "react-native";
 import React from "react";
-import microphoneOn from '../icons/microphone-on.png';
-import microphoneOff from '../icons/microphone-off.png';
-import microphoneOffWhite from '../icons/microphone-off-white.png';
-import microphoneOffBlack from '../icons/microphone-off-black.png';
-import microphoneOnWhite from '../icons/microphone-on-white.png';
+import micOn from '../icons/mic.png';
+import micOff from '../icons/micOff.png';
 
   
 const MicFAB = (props) => {
@@ -12,14 +9,14 @@ const MicFAB = (props) => {
         return (
             <TouchableOpacity style={styles.container}
             onPress={props.onPress}>
-            <Image style={styles.FABicon} source={microphoneOnWhite}/>
+            <Image style={styles.FABicon} source={micOn}/>
             </TouchableOpacity>
         )
     } else if (props.title == 'microphone-off') {
         return (
             <TouchableOpacity style={styles.container}
             onPress={props.onPress}>
-            <Image style={styles.FABicon} source={microphoneOffBlack}/>
+            <Image style={styles.FABicon} source={micOff}/>
             </TouchableOpacity>
         )
     }
@@ -37,20 +34,20 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: "center",
         alignItems: "center",
-        // borderRadius: 40,
-        borderRadius: 20,
+         borderRadius: 40,
+        //borderRadius: 20,
         position: "absolute",
         bottom: 15,
-       // right: 20,
-       left:80,
+        right: 25,
+       //left:80,
         backgroundColor: "#02ab56",
         paddingHorizontal: 20,
         paddingVertical: 20,
         shadowColor: 'black',
         elevation: 7,
-        height: 75,
-      //  width: 75,
-        width: 90,
+        height: 67,
+        width: 67,
+       // width: 90,
     },
     title: {
         fontSize: 18,
@@ -58,8 +55,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
     },
     FABicon: {
-        width: 20,
-        height: 40,
+        width: 25,
+        height: 43,
         
     }
 });
