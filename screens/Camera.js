@@ -26,10 +26,6 @@ export default function Camera({navigation, route}) {
             let cows = {...data};
             setCowList(cows);
             })
-        // Not showing this popup warning when opening camera-screen on a real phone (still visible in console)
-        LogBox.ignoreLogs([ 
-            "ViewPropTypes will be removed",
-        ])
 
     },[])
 
