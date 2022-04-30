@@ -71,7 +71,7 @@ export default function List({route, navigation}) {
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{flex: 1, backgroundColor: 'white'}}> 
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'lightgrey'}}>
             <Image source={searchGreen}  style={{width: 40, height: 40}} /> 
                 <View style={style.searchBox}>
                 
@@ -130,16 +130,20 @@ export default function List({route, navigation}) {
            
             {/* <Text>{JSON.stringify(searchList)}</Text>
             <Text>{JSON.stringify(sickKeys)}</Text> */}
-            <View style={style.listBg}>
+            <View style={styles.listBg}>
+            <View style={{padding: 10}}>
             { currentTab == "all" ? 
 
             // All cows-list
-            <ScrollView style={style.listContainer}>
+            <View>
+            {/* <ScrollView style={styles.contentContainer}> */}
             {search != '' ? 
             <>
             {/* searching through all */}
             {searchList.length > 0 ? 
-                <>
+                
+                <ScrollView style={styles.contentContainer}>
+
                 {searchList.map(key => ( 
                     <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
@@ -152,17 +156,19 @@ export default function List({route, navigation}) {
                         
                     </TouchableOpacity>
                     </View>
-                    ))
-                }
-                </>
+                    ))} 
+                </ScrollView>
+                
             : <Text style={style.searchResultText}>Tietokannassa ei ole vastaavaa korvanumeroa.</Text>
             }
+           
             </>
             : 
             
             <>
                {cowKeys.length > 0 ? 
-                <>
+                <ScrollView style={styles.contentContainer}>
+
                 {cowKeys.map(key => ( 
                     <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
@@ -177,23 +183,23 @@ export default function List({route, navigation}) {
                     </View>
                     ))
                 }
-                </>
+                </ScrollView>
             : <Text style={style.searchResultText}>Tietokanta on tyhjä.</Text>
             }
             </>
             }
           
-            </ScrollView>
-            
+            {/* </ScrollView> */}
+            </View>
             : 
 
             // Sick cows-list
-                <ScrollView style={style.listContainer}>
+                <ScrollView /* style={styles.contentContainer} */ >
             {search != '' ?
             <>
             {/* searching through sick here */}
             {searchList.length > 0 ? 
-                <>
+                <View style={styles.contentContainer}>
                 {searchList.map(key => ( 
                     <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
@@ -208,12 +214,12 @@ export default function List({route, navigation}) {
                     </View>
                     ))
                 }
-                </>
+                </View>
             : <Text style={style.searchResultText}>Sairaiden joukossa ei ole vastaavaa korvanumeroa.</Text>
             }
             </> :<>
             {sickKeys.length > 0 ? 
-                 <>
+                <View style={styles.contentContainer}>
                 {sickKeys.map(key => ( 
                     <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
                     <TouchableOpacity 
@@ -228,13 +234,14 @@ export default function List({route, navigation}) {
                     </View>
                     ))
                 }
-                </>
+                </View>
                : <Text style={style.searchResultText}>Tietokannassa ei ole sairaita lehmiä.</Text> }
             </>}
 
                 
             </ScrollView>
             }            
+                </View>
             </View>
 <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
       <MicFAB title="microphone-on"
@@ -264,7 +271,7 @@ const style= StyleSheet.create({
    
     activeTab: {
      //backgroundColor: '#9be8b2',
-     backgroundColor: '#408f57',
+     backgroundColor: '#66c257',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -275,7 +282,7 @@ const style= StyleSheet.create({
     },
     inactiveTab: {
        // backgroundColor: '#e6e6e6',
-       backgroundColor: '#7ac484',
+       backgroundColor: '#bfe3ba',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -294,7 +301,7 @@ const style= StyleSheet.create({
       //  backgroundColor: 'white',
         //borderColor: 'lightgray',
         //borderColor:'#5a856b',
-        backgroundColor: '#7ac484',
+        backgroundColor: '#15C573',
      //   borderWidth: 2,
         borderRadius: 9,
         alignItems: 'center',
@@ -310,11 +317,6 @@ const style= StyleSheet.create({
     searchText: {
         color: 'black',
         fontSize: 17.5
-    },
-    listBg: {
-        flex: 1,
-        marginBottom: 20,
-        backgroundColor: '#fff'
     },
     space: {
         width: 2,

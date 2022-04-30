@@ -6,6 +6,8 @@ import styles from '../style'
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
 import calfHead from '../icons/calfHead.png';
+import calfHeadWhite from '../icons/calfHeadWhite.png';
+import cowHeadWhite from '../icons/cowHeadWhite.png';
 import searchBlack from '../icons/search-black.png';
 
 export default function Home({navigation}) {
@@ -86,7 +88,7 @@ export default function Home({navigation}) {
       <>
       {/* CALF LIST */}
     <View style={styles.overview}>
-          <Image source={calfHead} style={styles.overviewImage}/>    
+          <Image source={cowHeadWhite} style={styles.overviewImage}/>    
           
           <View style={styles.overviewTotal}>
             <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}>
@@ -95,7 +97,6 @@ export default function Home({navigation}) {
               </View>
               <Text style={styles.overviewText}>YHTEENSÄ</Text>
             </TouchableOpacity>
-            
           </View>
 
           <View style={styles.overviewTotal}>
@@ -128,9 +129,10 @@ export default function Home({navigation}) {
     </View>
 
 
-
+  <View style={styles.listBg}>
       {cowKeys.length > 0 ? 
-      <ScrollView style={styles.contentContainer}>
+        <ScrollView style={styles.contentContainer}>
+       
       {
         cowKeys.map(key => ( 
         <View key={key} style={{ borderBottomWidth: 1, borderColor: '#87d477'}}>
@@ -145,13 +147,12 @@ export default function Home({navigation}) {
             
           </TouchableOpacity>
         </View>
-        ))
-        }
-        <View style={{height: 11}} /> 
-        {/* ^ Some padding to bottom, otherwise last row is cropped a little */}
-        </ScrollView> : (
+        ))}
+          </ScrollView>
+        : (
         <Text style={styles.emptyDatabaseView}>Tietokanta on tyhjä.</Text>
       )}
+      </View>
       </>
     }
 

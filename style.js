@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
         paddingTop: 10,
         paddingHorizontal: 20,
         backgroundColor: '#fff',
-        flex: 1
+        flex: 1,
+        
       },
       row: {
         flexDirection: 'row',
@@ -20,15 +21,16 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 20,
+        color: 'black'
     },
     subHeader: {
       fontSize: 16,
       color: '#001f15'
     },
     contentContainer: {
-      marginBottom: 45,
+      marginBottom: 40,
       padding: 10,
-      backgroundColor: '#e6ffd6',
+      backgroundColor: '#ddf1dA',
     //  borderColor: '#066127',
     // borderWidth: 2,
       borderRadius: 10,
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
         paddingTop: 20
     },
     customButton: {
-        backgroundColor: '#02ab56',
+        backgroundColor: '#22bc09',
         alignItems: 'center',
         alignSelf: 'center',
         marginVertical: 10,
@@ -88,30 +90,36 @@ const styles = StyleSheet.create({
         width: 90,
         height: 90,
         marginRight: 10,
+        marginLeft: 10,
      //   backgroundColor: '#edf2ee',
         borderRadius: 45,
+        borderColor: 'white',
+        borderWidth: 2.5,
         alignSelf: 'center',
     },
     overview: {
         flexDirection: 'row',
         padding: 5,
         alignItems: 'center',
+        justifyContent: 'center',
         // backgroundColor: '#e8ede9',
-        backgroundColor: '#e6ffd6',
+      //  backgroundColor: '#e6ffd6',
+      backgroundColor: '#22bc09',
         borderRadius: 20,
         shadowColor: 'black',
         elevation: 10,
         marginVertical: 10,
+        
     },
     overviewText: {
-        color: 'black',
+        color: 'white',
         fontSize: 10,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     overviewCircle: {
-        borderWidth: 1,
+        borderWidth: 1.5,
         borderRadius: 25,
-        borderColor: '#87d477',
+        borderColor: 'white',
         alignContent: 'center',
         justifyContent: 'center',
         height: 50,
@@ -121,7 +129,7 @@ const styles = StyleSheet.create({
     overviewCount: {
         alignSelf: 'center',
         fontSize: 15,
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
     },
     overviewTotal: {
@@ -134,7 +142,7 @@ const styles = StyleSheet.create({
     homeSearchBg: {
         position: 'absolute', 
         right: 15, 
-        backgroundColor:'#82d196',
+        backgroundColor:'#7ddb6e',
         padding: 10,
         borderRadius: 25,
         flexDirection: 'row',
@@ -143,7 +151,12 @@ const styles = StyleSheet.create({
     },
     FABarea: {
         flexDirection: 'row'
-    }
+    },
+    listBg: {
+        flex: 1,
+        backgroundColor: '#fff',
+      //  padding: 10
+    },
 })
 
 export default styles;

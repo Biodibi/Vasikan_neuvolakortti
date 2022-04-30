@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         bottom: 15,
         left: 25,
       //  right: 80,
-        backgroundColor: "#02ab56",
+        backgroundColor: "#22bc09",
         paddingHorizontal: 20,
         paddingVertical: 20,
         shadowColor: 'black',

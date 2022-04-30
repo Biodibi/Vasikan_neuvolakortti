@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
         bottom: 15,
         right: 25,
        //left:80,
-        backgroundColor: "#02ab56",
+        backgroundColor: "#22bc09",
         paddingHorizontal: 20,
         paddingVertical: 20,
         shadowColor: 'black',
