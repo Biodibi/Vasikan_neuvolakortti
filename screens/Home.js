@@ -95,7 +95,7 @@ export default function Home({navigation,route}) {
     : 
       <> 
        <View>
-         <Text>{botTemp}, {topTemp}</Text>
+         {/* <Text>{botTemp}, {topTemp}</Text> */}
         <Text style={styles.subHeader}>Tilanne</Text>
         <TouchableOpacity style={{position: 'absolute', right: 15, flexDirection: 'row'}}
           onPress={() => navigation.navigate('Settings', {botTemp: botTemp, topTemp: topTemp, settingsFound: settingsFound})}>
