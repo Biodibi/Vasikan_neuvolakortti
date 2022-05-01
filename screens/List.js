@@ -113,7 +113,6 @@ export default function List({route, navigation}) {
                 </View>
             </View>
             <View style={style.tabheader}>
-
                     <Pressable  
                       style={ currentTab=='all' ? style.activeTab : style.inactiveTab}
                       onPress={() => toggleTab(all)}
@@ -148,7 +147,7 @@ export default function List({route, navigation}) {
                 <ScrollView style={styles.contentContainer}>
 
                 {searchList.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56', borderBottomEndRadius: 12, borderBottomStartRadius: 12}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -157,6 +156,7 @@ export default function List({route, navigation}) {
                             temperature={allCows[key].temperature}
                             procedures={allCows[key].procedures}
                             procedureIDs={getProcedureIDs(allCows[key].procedures)}
+                            sick={sickKeys.includes(key) ? true : false}
 
                         />
                         
@@ -176,7 +176,7 @@ export default function List({route, navigation}) {
                 <ScrollView style={styles.contentContainer}>
 
                 {cowKeys.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56', borderBottomEndRadius: 12, borderBottomStartRadius: 12}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -185,6 +185,7 @@ export default function List({route, navigation}) {
                             temperature={allCows[key].temperature}
                             procedures={allCows[key].procedures}
                             procedureIDs={getProcedureIDs(allCows[key].procedures)}
+                            sick={sickKeys.includes(key) ? true : false}
 
                         />
                         
@@ -203,14 +204,14 @@ export default function List({route, navigation}) {
             : 
 
             // Sick cows-list
-                <ScrollView /* style={styles.contentContainer} */ >
+                <View /* style={styles.contentContainer} */ >
             {search != '' ?
             <>
             {/* searching through sick here */}
             {searchList.length > 0 ? 
-                <View style={styles.contentContainer}>
+                <ScrollView style={styles.contentContainer}>
                 {searchList.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56', borderBottomEndRadius: 12, borderBottomStartRadius: 12}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: allCows[key], key: [key]})}>
                         <CowRow 
@@ -219,21 +220,21 @@ export default function List({route, navigation}) {
                             temperature={allCows[key].temperature}
                             procedures={allCows[key].procedures}
                             procedureIDs={getProcedureIDs(allCows[key].procedures)}
-
+                            sick={sickKeys.includes(key) ? true : false}
                         />
                         
                     </TouchableOpacity>
                     </View>
                     ))
                 }
-                </View>
+                </ScrollView>
             : <Text style={style.searchResultText}>Sairaiden joukossa ei ole vastaavaa korvanumeroa.</Text>
             }
             </> :<>
             {sickKeys.length > 0 ? 
-                <View style={styles.contentContainer}>
+                <ScrollView style={styles.contentContainer}>
                 {sickKeys.map(key => ( 
-                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56'}}>
+                    <View key={key} style={{ borderBottomWidth: 1, borderColor: '#02ab56', borderBottomEndRadius: 12, borderBottomStartRadius: 12}}>
                     <TouchableOpacity 
                     onPress={() => navigation.navigate('Individual', {cow: sickCows[key], key: [key]})}>
                         <CowRow 
@@ -242,19 +243,19 @@ export default function List({route, navigation}) {
                             temperature={sickCows[key].temperature}
                             procedures={allCows[key].procedures}
                             procedureIDs={getProcedureIDs(allCows[key].procedures)}
-
+                            sick={true}
                         />
                         
                     </TouchableOpacity>
                     </View>
                     ))
                 }
-                </View>
+                </ScrollView>
                : <Text style={style.searchResultText}>Tietokannassa ei ole sairaita lehmiä.</Text> }
             </>}
 
                 
-            </ScrollView>
+            </View>
             }            
                 </View>
             </View>

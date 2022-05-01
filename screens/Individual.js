@@ -144,7 +144,7 @@ export default function Individual({navigation, route}) {
                             onChangeText={setTemperature} keyboardType='numeric' />
 
                         <Text style={styles.textInputLabel}>Toimenpiteet</Text>
-                        <Text>Uusi toimenpide</Text>
+                        <Text>➥ Uusi toimenpide</Text>
                         <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
                             placeholder='Vapaa kuvaus ...' value={newProcedureDesc}
                             onChangeText={setNewProcedureDesc} multiline={true}/>
@@ -164,7 +164,7 @@ export default function Individual({navigation, route}) {
                 {newFirst ? 
                 <>
                 {procedureIDs.map(key => ( 
-                <View key={key} style={{flexDirection: 'row'}}>
+                <View key={key} style={{flexDirection: 'row', paddingTop: 8}}>
                     <View>
                         <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
                         <Text>"{procedures[key].description}"</Text>
@@ -195,7 +195,7 @@ export default function Individual({navigation, route}) {
                 </ScrollView>
             </>
             : // No procedures logged before
-            <Text>Ei aiempia toimenpiteitä.</Text>}
+            <Text style={{fontStyle: 'italic', marginLeft: 10, marginBottom: 10}}>Ei aiempia toimenpiteitä.</Text>}
 
            
            

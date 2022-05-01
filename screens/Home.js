@@ -150,7 +150,7 @@ export default function Home({navigation,route}) {
        
       {
         cowKeys.map(key => ( 
-        <View key={key} style={{ borderBottomWidth: 1, borderColor: '#87d477'}}>
+        <View key={key} style={{ borderBottomWidth: 1, borderColor: '#87d477', borderBottomEndRadius: 12, borderBottomStartRadius: 12}}>
           <TouchableOpacity 
           onPress={() => navigation.navigate('Individual', {cow: cowList[key], key: [key]})}>
               <CowRow 
@@ -159,7 +159,7 @@ export default function Home({navigation,route}) {
                 temperature={cowList[key].temperature}
                 procedures={cowList[key].procedures}
                 procedureIDs={getProcedureIDs(cowList[key].procedures)}
-                // trembling={cowList[key].trembling}
+                sick={sickKeys.includes(key) ? true : false}
               />
             
           </TouchableOpacity>

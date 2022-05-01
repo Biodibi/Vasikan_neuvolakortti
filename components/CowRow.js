@@ -1,17 +1,16 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {db, ROOT_REF} from '../firebase/Config';
+import {StyleSheet, View, Image, Text} from 'react-native';
+import warning from '../icons/exclamation-mark.png';
 
 // A single row for rendering cow information on the main list
-export const CowRow = ({cowNumber, cowName, temperature, procedures, procedureIDs}) => {
-
-    const onRemove = () => {
-        db.ref(ROOT_REF + [cowNumber]).remove();
-    }
+export const CowRow = ({cowNumber, cowName, temperature, procedures, procedureIDs, sick}) => {
     return (
         <View style={styles.row}>
             <View style={styles.col1}>
-                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 16, marginTop: 10}}>{cowNumber}</Text>
+                <Text style={{fontWeight: 'bold', color: 'black', fontSize: 16, marginTop: 5}}>{cowNumber}</Text>
+                
+                {sick ? <Image source={warning} style={{height: 20, width: 23, marginBottom: 10, marginLeft: 5}} /> :
+                null}
             </View>
             <View style={styles.col2}>
                 {cowName ? <Text style={{color: 'black'}}>"{cowName}"</Text> : null}
@@ -55,6 +54,6 @@ const styles = StyleSheet.create({
     },
     arrow: {
         fontSize: 25,
-        color: '#616161'
+        color: '#049151'
     }
 })
