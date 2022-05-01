@@ -1,31 +1,53 @@
 import React, {useState, useEffect} from 'react';
-import {Text,View,TouchableOpacity,Alert, ScrollView, Image, TouchableWithoutFeedback,Keyboard,ActivityIndicator} from 'react-native';
-import {db, ROOT_REF} from '../firebase/Config';
+import {Text,View,TouchableOpacity,Alert, ScrollView,Image, TouchableWithoutFeedback,Keyboard,ActivityIndicator} from 'react-native';
+import {db, ROOT_REF, settings} from '../firebase/Config';
+import { ref } from "firebase/database";
 import { CowRow } from '../components/CowRow';
 import styles from '../style'
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
 import cowHeadWhite from '../icons/cowHeadWhite.png';
 import searchWhite from '../icons/searchWhite.png';
+import gear from '../icons/gear.png';
 
-export default function Home({navigation}) {
+export default function Home({navigation,route}) {
   const [cowList, setCowList] = useState({});
   const [sickCows, setSickCows] = useState({});
 
   const [loadingStatus, setLoadingStatus] = useState(true); 
   const [microphoneOn, setMicrophoneOn] = useState(true);
 
+  // by default these are the temperatures for defining when cow is sick
+  const [botTemp, setBotTemp] = useState(38.4); 
+  const [topTemp, setTopTemp] = useState(39.6); 
+  const [settingsFound, setSettingsFound] = useState(false);
 
+  // launching app calls for 'settings' and 'cows' nodes simultaneously
+  // these variables make sure that everything is rendered at once when everything is ready
+  const [dbReady, setDbReady] = useState(false);
+  const [countReady, setCountReady] = useState(false);
 
   useEffect(() => {
     if (loadingStatus) {
+      db.ref(settings).on('value', querySnapShot => {
+          let data = querySnapShot.val() ? querySnapShot.val(): null;
+          if (data) {
+            // if custom limits exist, default limits are overridden
+            setTopTemp(data.topTemp);
+            setBotTemp(data.botTemp);
+            setSettingsFound(true);
+          }
+      });
+      setCountReady(true);
       db.ref(ROOT_REF).orderByChild('number').on('value', querySnapShot => {
-      let data = querySnapShot.val() ? querySnapShot.val(): {};
-      let cows = {...data};
-      setCowList(cows);
-      setLoadingStatus(false);
-    });
-    }
+        let data = querySnapShot.val() ? querySnapShot.val(): {};
+        let cows = {...data};
+        setCowList(cows);
+        setDbReady(true);
+      }); 
+    setLoadingStatus(false);
+}          
+
   }, []);
 
   useEffect(() => {
@@ -38,7 +60,7 @@ export default function Home({navigation}) {
                 // ... some temperature was given...
               let current = copy[cowKeys[i]].temperature.toString().replace(/,/g, '.');
               let currentNumber = Number(current);
-              if ((currentNumber >= 38.5) && (currentNumber <= 39.5)) { // is temperature healthy?
+              if ((currentNumber >= botTemp) && (currentNumber <= topTemp)) { // is temperature healthy?
                   delete copy[cowKeys[i]];
                  // alert(cowKeys[i])
               }
@@ -50,47 +72,37 @@ export default function Home({navigation}) {
       }
       setSickCows(copy);
       //setSickCows(sick);
-  }, [cowList])
+  }, [cowList, topTemp, botTemp])
 
   let sickKeys = Object.keys(sickCows).sort();
   let cowKeys = Object.keys(cowList).sort();
 
-  // user clicked 'remove all'; asking for confirmation first
-  const confirmDeleteAll = () => Alert.alert(
-        "Varoitus: tietokannan tyhjentäminen", "Tätä ei voi perua. Oletko varma, että haluat poistaa kaikki vasikat tietokannasta?", 
-        [
-          {
-            text: "Ei, mene takaisin.",
-            onPress: () => console.log('Cancel pressed'),
-          },
-          {
-            text: "Kyllä, poista.", onPress: () => removeConfirmed()
-          }
-      ],
-      {cancelable: false}
-      );
-    
-  // remove all cows
-  function removeConfirmed() {
-      db.ref(ROOT_REF).remove();
-    }  
-    
+
+
     function getProcedureIDs(procedures) {   
       let procedureIDs = Object.keys(procedures);
       return procedureIDs;
-  }
+  } 
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.main}>
-      <Text style={styles.subHeader}>Tilanne</Text>
-    
-    {loadingStatus ? <>
-    <Text>Ladataan tietokantaa ...
-    <ActivityIndicator style={{alignSelf:'center'}} size="small" color="#6ad49f" /></Text> 
-    </> 
+    {!dbReady || !countReady ? 
+    <View style={{flex: 1, marginTop: 25}}>
+      <Text style={{alignSelf:'center', fontSize: 15}}>Ladataan tietokantaa ...
+      <ActivityIndicator style={{alignSelf:'center'}} size="small" color="#6ad49f" /></Text> 
+    </View> 
     : 
-      <>
+      <> 
+       <View>
+         <Text>{botTemp}, {topTemp}</Text>
+        <Text style={styles.subHeader}>Tilanne</Text>
+        <TouchableOpacity style={{position: 'absolute', right: 15, flexDirection: 'row'}}
+          onPress={() => navigation.navigate('Settings', {botTemp: botTemp, topTemp: topTemp, settingsFound: settingsFound})}>
+          <Image source={gear} style={{height: 20, width: 20, marginRight: 5}} />
+          <Text style={{color: '#001f15', fontSize: 15}}>Asetukset</Text>
+        </TouchableOpacity>
+      </View>
       {/* CALF LIST */}
     <View style={styles.overview}>
           <Image source={cowHeadWhite} style={styles.overviewImage}/>    
@@ -107,17 +119,15 @@ export default function Home({navigation}) {
           <View style={styles.overviewTotal}>
           <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'sick', microphoneOn: microphoneOn})}>
             <View style={styles.overviewCircle} >
+             
               <Text style={styles.overviewCount}>{sickKeys.length}</Text>
+              
             </View>
             <Text style={styles.overviewText}>SAIRAITA</Text>
             </TouchableOpacity>
           </View>
        
     </View>
-    
-    {/* <TouchableOpacity style={styles.grayButton} onPress={() => confirmDeleteAll()}>
-        <Text style={styles.buttonText}>Tyhjennä tietokanta</Text>
-    </TouchableOpacity> */}
 
     <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20, marginBottom: 15}}>
       <TouchableOpacity onPress={() => navigation.navigate('List', {cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}>

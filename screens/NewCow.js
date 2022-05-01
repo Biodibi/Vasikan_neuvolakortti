@@ -76,10 +76,11 @@ export default function Home({navigation, route}) {
         } else {
           // Json parse used to prevent sending undefined values to database (undefined is not allowed)
           let saveData = {};
+          let temperatureFormatted = temperature.toString().replace(/,/g, '.');
           if (procedure) {
             saveData = JSON.parse(JSON.stringify({ 
                name: cowName,
-               temperature: temperature,
+               temperature: temperatureFormatted,
                procedures: {
                  1: {
                   description: procedure,
@@ -91,7 +92,7 @@ export default function Home({navigation, route}) {
            } else {
             saveData = JSON.parse(JSON.stringify({ 
              name: cowName,
-             temperature: temperature,
+             temperature: temperatureFormatted,
              procedures: "" 
            }))
            }

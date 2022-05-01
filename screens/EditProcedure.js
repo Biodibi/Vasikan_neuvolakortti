@@ -82,8 +82,10 @@ export default function Individual({navigation, route}) {
 
             <View style={styles.titleRow}>            
                 <Text style={styles.header}># {route.params?.cowID}</Text>
+            </View>                
+            <Text style={styles.header}>Toimenpide ajalta {date}, {time}</Text>
 
-            </View>
+            <Text style={styles.subHeader}></Text>
 
         
 

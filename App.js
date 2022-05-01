@@ -7,6 +7,7 @@ import NewCow from './screens/NewCow';
 import AddButton from './components/AddButton';
 import Camera from './screens/Camera';
 import EditProcedure from './screens/EditProcedure';
+import Settings from './screens/Settings';
 import { LogBox } from 'react-native';
 import List from './screens/List';
 
@@ -40,8 +41,16 @@ export default function App() {
                 <AddButton />
             ),
           }} 
-          
         />
+
+    <Stack.Screen
+          name="Settings"
+          component={Settings}
+          options={{
+            title: "Settings",
+            headerTitle: "TIETOKANTA-ASETUKSET"
+          }} 
+        />  
 
       <Stack.Screen
           name="NewCow"

@@ -31,8 +31,8 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     plusIcon: {
-        width: 50,
-        height: 50,
+        width: 45,
+        height: 45,
        // backgroundColor: '#66c257',
         borderRadius: 25
     }

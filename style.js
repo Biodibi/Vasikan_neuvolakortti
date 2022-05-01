@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
       marginBottom: 40,
-      padding: 10,
+     
       backgroundColor: '#ddf1dA',
     //  borderColor: '#066127',
     // borderWidth: 2,
@@ -55,9 +55,6 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginBottom: 20,
         color: 'black'
-    },
-    procedureList: {
-        paddingVertical: 10
     },
     customButton: {
         backgroundColor: '#22bc09',
@@ -159,6 +156,26 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8
       //  padding: 10
     },
+    settingsHeaderRow: {
+        flexDirection: 'row',
+      //  justifyContent: 'center',
+        marginBottom: 5,
+        alignItems: 'center'
+    },
+    lineBreak: {
+        backgroundColor: 'lightgray',
+        marginVertical: 25,
+        width: '100%',
+        height: 1,
+    },
+    helpText: {
+        color: 'darkgrey',
+        fontSize: 15,
+        marginBottom: 5
+    },
+    procedureList: {
+        backgroundColor: 'white'
+    }
 })
 
 export default styles;

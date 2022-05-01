@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Button, Pressable, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native';
+import {View, Text, StyleSheet, Button, Pressable, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native';
 import {db, ROOT_REF} from '../firebase/Config';
 import { ref, update } from "firebase/database";
 import Radiobutton from '../components/Radiobutton';
 import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import trashRed from '../icons/trash-red.png';
+import sort from '../icons/sort.png';
 
 export default function Individual({navigation, route}) {
     const [index, setIndex] = useState(null);
@@ -43,6 +44,7 @@ export default function Individual({navigation, route}) {
     function saveChanges() {
         let upToDateProcedures = procedures;
         let saveData = {};
+        let temperatureFormatted = temperature.toString().replace(/,/g, '.');
         // Json parse used to prevent sending undefined values to database (undefined is not allowed)
         if (procedures && newProcedureDesc) { 
             // if user logged new procedure while editing AND prev. procedures exist
@@ -50,7 +52,7 @@ export default function Individual({navigation, route}) {
             proceduresToArray.splice(procedures.length, 0, {description:newProcedureDesc, time: time, date:date});  
             saveData = JSON.parse(JSON.stringify({ 
                 name: cowName,
-                temperature: temperature,
+                temperature: temperatureFormatted,
                 procedures: proceduresToArray
               }))
        
@@ -64,19 +66,19 @@ export default function Individual({navigation, route}) {
                 }}; 
                 saveData = JSON.parse(JSON.stringify({ 
                     name: cowName,
-                    temperature: temperature,
+                    temperature: temperatureFormatted,
                     procedures: upToDateProcedures
                   }))
         } else if (procedures && !newProcedureDesc) {
             saveData = JSON.parse(JSON.stringify({ 
                 name: cowName,
-                temperature: temperature,
+                temperature: temperatureFormatted,
                 procedures: procedures
               }))
         } else {
             saveData = JSON.parse(JSON.stringify({ 
                 name: cowName,
-                temperature: temperature,
+                temperature: temperatureFormatted,
                 procedures: ""
               }))
         } // 
@@ -119,38 +121,43 @@ export default function Individual({navigation, route}) {
       }
 
     return (
+        
         <View style={styles.main}>
-            <View style={styles.titleRow}>            
-                <Text style={styles.header}># {index}</Text>
-                <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 20,}}>
-                    <Image source={trashRed} style={{height: 20, width: 20}} />
-                    <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista vasikka</Text>
-                </TouchableOpacity>
+                <View style={styles.titleRow}>            
+                    <Text style={styles.header}># {index}</Text>
+                    <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 20,}}>
+                        <Image source={trashRed} style={{height: 20, width: 20}} />
+                        <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista vasikka</Text>
+                    </TouchableOpacity>
+                </View>
 
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <View>
+                    <Text style={styles.textInputLabel}>Nimi</Text>
+                        <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
+                            placeholder='Vasikan nimi (valinnainen)'
+                            value={cowName} onChangeText={setCowName}/>
 
-            </View>
+                        <Text style={styles.textInputLabel}>Ruumiinlämpö (°C)</Text>
+                        <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
+                            placeholder='Vasikan ruumiinlämpö (valinnainen)' value={temperature}
+                            onChangeText={setTemperature} keyboardType='numeric' />
 
-        <Text style={styles.textInputLabel}>Nimi</Text>
-            <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
-                placeholder='Vasikan nimi (valinnainen)'
-                value={cowName} onChangeText={setCowName}/>
+                        <Text style={styles.textInputLabel}>Toimenpiteet</Text>
+                        <Text>Uusi toimenpide</Text>
+                        <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
+                            placeholder='Vapaa kuvaus ...' value={newProcedureDesc}
+                            onChangeText={setNewProcedureDesc} multiline={true}/>
+                </View>
+                </TouchableWithoutFeedback>
 
-            <Text style={styles.textInputLabel}>Ruumiinlämpö (°C)</Text>
-            <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
-                placeholder='Vasikan ruumiinlämpö (valinnainen)' value={temperature}
-                onChangeText={setTemperature} keyboardType='numeric' />
-
-            <Text style={styles.textInputLabel}>Toimenpiteet</Text>
-            <Text>Uusi toimenpide</Text>
-            <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
-                placeholder='Vapaa kuvaus ...' value={newProcedureDesc}
-                onChangeText={setNewProcedureDesc} multiline={true}/>
             {procedures ? // Procedures have been logged before
             <>
             <View style={{flexDirection: 'row'}}>
                 <Text style={{color: 'black'}}>Aiemmat toimenpiteet ({procedureIDs.length})</Text>
-                <TouchableOpacity style={{right: 10, position: 'absolute'}} onPress={() => toggleOrder()}>
-                    <Text>{newFirst ? "Lajittele: Uusin ensin" : "Lajittele: Vanhin ensin"}</Text>
+                <TouchableOpacity style={{right: 10, position: 'absolute', flexDirection: 'row'}} onPress={() => toggleOrder()}>
+                <Image source={sort} style={{height: 15, width: 15}} />
+                    <Text style={styles.textInputLabel}>{newFirst ? "  Uusin ensin" : "  Vanhin ensin"}</Text>
                 </TouchableOpacity>
             </View>
             <ScrollView style={styles.procedureList}>
@@ -177,7 +184,7 @@ export default function Individual({navigation, route}) {
                         <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
                         <Text>"{procedures[key].description}"</Text>
                     </View>
-                    <TouchableOpacity style={{right: 20, position: 'absolute'}}
+                    <TouchableOpacity style={{right: 20, position: 'absolute', flexDirection: 'row'}}
                         onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
                         <Text>Muokkaa</Text>
                     </TouchableOpacity>
@@ -208,6 +215,7 @@ export default function Individual({navigation, route}) {
             <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
 
         </View>
+        
     )
 }
 
