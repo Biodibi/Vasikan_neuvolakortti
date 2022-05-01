@@ -5,8 +5,8 @@ import { CowRow } from '../components/CowRow';
 import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
-import CircledCrossBlack from '../icons/circled-cross-black.png';
-import searchGreen from '../icons/search-green.png';
+import CircledCrossWhite from '../icons/circled-cross-white.png';
+import searchGreen from '../icons/searchGreen.png';
 
 export default function List({route, navigation}) {
     // set these inside useeffect; initially null
@@ -67,11 +67,14 @@ export default function List({route, navigation}) {
         }
         }
     }
-
+    function getProcedureIDs(procedures) {   
+        let procedureIDs = Object.keys(procedures);
+        return procedureIDs;
+    }
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={{flex: 1, backgroundColor: 'white'}}> 
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'lightgrey'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: 'white', padding: 5}}>
             <Image source={searchGreen}  style={{width: 40, height: 40}} /> 
                 <View style={style.searchBox}>
                 
@@ -79,7 +82,7 @@ export default function List({route, navigation}) {
                     value={search} style={style.searchText}
                     onChangeText={text => setSearch(text)}
                     placeholder='Hae korvanumerolla...'
-                    placeholderTextColor='black'
+                    placeholderTextColor='white'
                     returnKeyType='search'
                     maxLength={4} keyboardType='numeric'
                     onFocus={() => setSearchBoxActive(true)}
@@ -89,10 +92,10 @@ export default function List({route, navigation}) {
                     <>
                     {search.length > 0 ? 
                         <TouchableOpacity onPress={() => unfocus()} style={{justifyContent: 'center', right: 20, alignItems:'center', position: 'absolute'}}>
-                        <Image source={CircledCrossBlack} 
+                        <Image source={CircledCrossWhite} 
                         style={{width: 18, height: 18}}
                         />
-                        <Text style={{fontSize: 10, color: 'black'}}>TYHJENNÄ</Text>
+                        <Text style={{fontSize: 10, color: 'white'}}>TYHJENNÄ</Text>
                     </TouchableOpacity>
                     : null}
                     </>
@@ -152,6 +155,9 @@ export default function List({route, navigation}) {
                             cowNumber={key}
                             cowName={allCows[key].name}
                             temperature={allCows[key].temperature}
+                            procedures={allCows[key].procedures}
+                            procedureIDs={getProcedureIDs(allCows[key].procedures)}
+
                         />
                         
                     </TouchableOpacity>
@@ -177,6 +183,9 @@ export default function List({route, navigation}) {
                             cowNumber={key}
                             cowName={allCows[key].name}
                             temperature={allCows[key].temperature}
+                            procedures={allCows[key].procedures}
+                            procedureIDs={getProcedureIDs(allCows[key].procedures)}
+
                         />
                         
                     </TouchableOpacity>
@@ -208,6 +217,9 @@ export default function List({route, navigation}) {
                             cowNumber={key}
                             cowName={allCows[key].name}
                             temperature={allCows[key].temperature}
+                            procedures={allCows[key].procedures}
+                            procedureIDs={getProcedureIDs(allCows[key].procedures)}
+
                         />
                         
                     </TouchableOpacity>
@@ -228,6 +240,9 @@ export default function List({route, navigation}) {
                             cowNumber={key}
                             cowName={sickCows[key].name}
                             temperature={sickCows[key].temperature}
+                            procedures={allCows[key].procedures}
+                            procedureIDs={getProcedureIDs(allCows[key].procedures)}
+
                         />
                         
                     </TouchableOpacity>
@@ -258,7 +273,8 @@ const style= StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         alignSelf: 'stretch',
-        left: 0, right: 0
+        left: 0, right: 0,
+        marginBottom: 8
     },
     tabText: {
         fontSize: 20,
@@ -270,8 +286,8 @@ const style= StyleSheet.create({
     },
    
     activeTab: {
-     //backgroundColor: '#9be8b2',
-     backgroundColor: '#66c257',
+     backgroundColor: '#049151',
+    // backgroundColor: '#15C573',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -281,8 +297,8 @@ const style= StyleSheet.create({
 
     },
     inactiveTab: {
-       // backgroundColor: '#e6e6e6',
-       backgroundColor: '#bfe3ba',
+        backgroundColor: '#8abd8f',
+      // backgroundColor: '#bfe3ba',
         flex: 1,
         alignSelf: 'center',
         alignItems: 'center',
@@ -315,8 +331,9 @@ const style= StyleSheet.create({
         paddingLeft: 15
     },
     searchText: {
-        color: 'black',
-        fontSize: 17.5
+        color: 'white',
+        fontSize: 17.5,
+        fontStyle: 'italic'
     },
     space: {
         width: 2,

@@ -6,6 +6,7 @@ import Individual from './screens/Individual';
 import NewCow from './screens/NewCow';
 import AddButton from './components/AddButton';
 import Camera from './screens/Camera';
+import EditProcedure from './screens/EditProcedure';
 import { LogBox } from 'react-native';
 import List from './screens/List';
 
@@ -47,7 +48,7 @@ export default function App() {
           component={NewCow}
           options={{
             title: "New Cow",
-            headerTitle: "Lisää uusi vasikka"
+            headerTitle: "LISÄÄ UUSI VASIKKA"
           }} 
         />  
 
@@ -56,7 +57,7 @@ export default function App() {
           component={Individual}
           options={{
             title: "Edit cow",
-            headerTitle: "Muokkaa vasikan tietoja"
+            headerTitle: "MUOKKAA VASIKAN TIETOJA"
           }} 
         />  
 
@@ -65,7 +66,7 @@ export default function App() {
           component={Camera}
           options={{
             title: "Camera",
-            headerTitle: "Skannaa korvanumero"
+            headerTitle: "SKANNAA KORVANUMERO"
           }} 
         />
 
@@ -74,10 +75,19 @@ export default function App() {
           component={List}
           options={{
             title: "List",
-            headerTitle: "Vasikat",
+            headerTitle: "VASIKAT",
             headerRight: () => (
               <AddButton />
           ),
+          }} 
+        />
+
+      <Stack.Screen
+          name="EditProcedure"
+          component={EditProcedure}
+          options={{
+            title: "EditProcedure",
+            headerTitle: "MUOKKAA TOIMENPIDETTÄ"
           }} 
         />
 

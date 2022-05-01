@@ -8,12 +8,16 @@ import MicFAB from '../components/MicFAB';
 import trashRed from '../icons/trash-red.png';
 
 export default function Individual({navigation, route}) {
-    const [currentCow, setCurrentCow] = useState([]);
     const [index, setIndex] = useState(null);
     const [cowName, setCowName] = useState('');
     const [temperature, setTemperature] = useState('');
-
-    const [inProgress, setInProgress] = useState(true);
+    const [procedures, setProcedures] = useState({});
+    const [newProcedureDesc, setNewProcedureDesc] = useState('');
+    const timestampUnix = Date.now();
+    const dateObject = new Date(timestampUnix);
+    const time = dateObject.toLocaleTimeString().substring(0, 5);
+    const date = dateObject.getDate()+"."+dateObject.getMonth()+"."+dateObject.getFullYear();
+    const [newFirst, setNewFirst] = useState(true);
 
     // const [trembling, setTrembling] = useState(null);
     // const tremblingOptions = [
@@ -23,24 +27,61 @@ export default function Individual({navigation, route}) {
    
     useEffect(() => {
             if (route.params?.cow) {
-                setCurrentCow(route.params?.cow);
                 setCowName(route.params?.cow.name);
                 setTemperature(route.params?.cow.temperature);
+                setProcedures(route.params?.cow.procedures);
                 setIndex(route.params?.key);
             } else {
                 Alert.alert("Virhe","Vasikan tietojen haku epäonnistui.",[{ text: "OK", onPress: () => navigation.navigate("Home") }]);
             }
         }, [])
     
-    function saveChanges() {
-        // Json parse used to prevent sending undefined values to database (undefined is not allowed)
-        let saveData = JSON.parse(JSON.stringify({ name: cowName,
-            temperature: temperature,
-          }))
+      let procedureIDs = Object.keys(procedures).reverse(); //new entries first
+      let procedureIDsAsc = Object.keys(procedures); //old entries first
 
+
+    function saveChanges() {
+        let upToDateProcedures = procedures;
+        let saveData = {};
+        // Json parse used to prevent sending undefined values to database (undefined is not allowed)
+        if (procedures && newProcedureDesc) { 
+            // if user logged new procedure while editing AND prev. procedures exist
+            let proceduresToArray = Array.from(procedures);
+            proceduresToArray.splice(procedures.length, 0, {description:newProcedureDesc, time: time, date:date});  
+            saveData = JSON.parse(JSON.stringify({ 
+                name: cowName,
+                temperature: temperature,
+                procedures: proceduresToArray
+              }))
+       
+        } else if (!procedures && newProcedureDesc) { // ok
+            // prev. procedures do not exist BUT user logged the first one now
+            upToDateProcedures = {
+                1: {
+                 description: newProcedureDesc,
+                 date: date,
+                 time: time
+                }}; 
+                saveData = JSON.parse(JSON.stringify({ 
+                    name: cowName,
+                    temperature: temperature,
+                    procedures: upToDateProcedures
+                  }))
+        } else if (procedures && !newProcedureDesc) {
+            saveData = JSON.parse(JSON.stringify({ 
+                name: cowName,
+                temperature: temperature,
+                procedures: procedures
+              }))
+        } else {
+            saveData = JSON.parse(JSON.stringify({ 
+                name: cowName,
+                temperature: temperature,
+                procedures: ""
+              }))
+        } // 
         update(ref(db, ROOT_REF + index), saveData)
         .then(() => {
-            // navigation.goBack();
             navigation.navigate('Home'); // Data saved successfully!
           })
           .catch((error) => {
@@ -49,13 +90,6 @@ export default function Individual({navigation, route}) {
           
     }
     
-    useEffect(() => {
-        if (!inProgress) {
-            navigation.navigate('Home');
-            // navigation.goBack();
-        }
-    }, [inProgress])
-
      // asking for confirmation first before removing calf
   const confirmBeforeRemove = () => Alert.alert(
     "Tietojen poistaminen", "Oletko varma, että haluat poistaa vasikan #"+index+ " tietokannasta?", 
@@ -80,6 +114,10 @@ export default function Individual({navigation, route}) {
         return;
       }
 
+      function toggleOrder() {
+          setNewFirst(!newFirst);
+      }
+
     return (
         <View style={styles.main}>
             <View style={styles.titleRow}>            
@@ -92,7 +130,6 @@ export default function Individual({navigation, route}) {
 
             </View>
 
-        <ScrollView style={styles.formArea}>
         <Text style={styles.textInputLabel}>Nimi</Text>
             <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
                 placeholder='Vasikan nimi (valinnainen)'
@@ -102,6 +139,58 @@ export default function Individual({navigation, route}) {
             <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
                 placeholder='Vasikan ruumiinlämpö (valinnainen)' value={temperature}
                 onChangeText={setTemperature} keyboardType='numeric' />
+
+            <Text style={styles.textInputLabel}>Toimenpiteet</Text>
+            <Text>Uusi toimenpide</Text>
+            <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
+                placeholder='Vapaa kuvaus ...' value={newProcedureDesc}
+                onChangeText={setNewProcedureDesc} multiline={true}/>
+            {procedures ? // Procedures have been logged before
+            <>
+            <View style={{flexDirection: 'row'}}>
+                <Text style={{color: 'black'}}>Aiemmat toimenpiteet ({procedureIDs.length})</Text>
+                <TouchableOpacity style={{right: 10, position: 'absolute'}} onPress={() => toggleOrder()}>
+                    <Text>{newFirst ? "Lajittele: Uusin ensin" : "Lajittele: Vanhin ensin"}</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView style={styles.procedureList}>
+                {newFirst ? 
+                <>
+                {procedureIDs.map(key => ( 
+                <View key={key} style={{flexDirection: 'row'}}>
+                    <View>
+                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
+                        <Text>"{procedures[key].description}"</Text>
+                    </View>
+                    <TouchableOpacity style={{right: 20, position: 'absolute'}}
+                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
+                        <Text>Muokkaa</Text>
+                    </TouchableOpacity>
+                </View>
+                ))}
+                </>
+                :
+                <>
+            {procedureIDsAsc.map(key => ( 
+                <View key={key} style={{flexDirection: 'row'}}>
+                    <View>
+                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
+                        <Text>"{procedures[key].description}"</Text>
+                    </View>
+                    <TouchableOpacity style={{right: 20, position: 'absolute'}}
+                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
+                        <Text>Muokkaa</Text>
+                    </TouchableOpacity>
+                </View>
+                ))}
+                </>}
+            
+                </ScrollView>
+            </>
+            : // No procedures logged before
+            <Text>Ei aiempia toimenpiteitä.</Text>}
+
+           
            
            {/* <Text>Trembling?</Text>
             <Radiobutton options={tremblingOptions} value={trembling}
@@ -109,13 +198,11 @@ export default function Individual({navigation, route}) {
             
             
             
-            
-            {/* <RightFAB title="Camera" onPress={() => navigation.navigate('Camera')} /> */}
-        <TouchableOpacity style={styles.customButton} onPress={() => saveChanges()}>
-            <Text style={styles.buttonText}>Tallenna muutokset</Text>
-        </TouchableOpacity>       
-                    
-            </ScrollView>     
+        <View style={{marginBottom: 30, marginRight: 10}}>
+            <TouchableOpacity style={styles.customButton} onPress={() => saveChanges()}>
+                <Text style={styles.buttonText}>Tallenna muutokset</Text>
+            </TouchableOpacity>       
+        </View>       
             
             {/* no global functionality to toggling microphone yet; useState in App.js? */}
             <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />

@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 20,
-        color: 'black'
+        color: 'black',
+        marginBottom: 10
     },
     subHeader: {
       fontSize: 16,
@@ -49,14 +50,14 @@ const styles = StyleSheet.create({
     textInput: {
         borderColor: 'gray',
         borderWidth: 1,
-        padding: 2,
-        paddingLeft: 20,
+        paddingVertical: 3,
+        paddingHorizontal: 20,
         borderRadius: 6,
         marginBottom: 20,
         color: 'black'
     },
-    formArea: {
-        paddingTop: 20
+    procedureList: {
+        paddingVertical: 10
     },
     customButton: {
         backgroundColor: '#22bc09',
@@ -67,10 +68,10 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 10,
         shadowColor: 'black',
-        elevation: 2,
+        elevation: 6,
     },
     grayButton: {
-        backgroundColor: 'darkgrey',
+        backgroundColor: '#d6d6d6',
         alignItems: 'center',
         alignSelf: 'center',
         marginVertical: 10,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         borderRadius: 10,
         shadowColor: 'black',
-        elevation: 2,
+        elevation: 6,
     },
     buttonText: {
         color: '#fff',
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
     homeSearchBg: {
         position: 'absolute', 
         right: 15, 
-        backgroundColor:'#7ddb6e',
+        backgroundColor:'#22bc09',
         padding: 10,
         borderRadius: 25,
         flexDirection: 'row',
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
     listBg: {
         flex: 1,
         backgroundColor: '#fff',
+        paddingHorizontal: 8
       //  padding: 10
     },
 })

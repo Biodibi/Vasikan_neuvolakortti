@@ -5,10 +5,8 @@ import { CowRow } from '../components/CowRow';
 import styles from '../style'
 import MicFAB from '../components/MicFAB';
 import CameraFAB from '../components/CameraFAB';
-import calfHead from '../icons/calfHead.png';
-import calfHeadWhite from '../icons/calfHeadWhite.png';
 import cowHeadWhite from '../icons/cowHeadWhite.png';
-import searchBlack from '../icons/search-black.png';
+import searchWhite from '../icons/searchWhite.png';
 
 export default function Home({navigation}) {
   const [cowList, setCowList] = useState({});
@@ -16,6 +14,8 @@ export default function Home({navigation}) {
 
   const [loadingStatus, setLoadingStatus] = useState(true); 
   const [microphoneOn, setMicrophoneOn] = useState(true);
+
+
 
   useEffect(() => {
     if (loadingStatus) {
@@ -73,7 +73,12 @@ export default function Home({navigation}) {
   // remove all cows
   function removeConfirmed() {
       db.ref(ROOT_REF).remove();
-    }
+    }  
+    
+    function getProcedureIDs(procedures) {   
+      let procedureIDs = Object.keys(procedures);
+      return procedureIDs;
+  }
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -121,8 +126,8 @@ export default function Home({navigation}) {
       <TouchableOpacity 
         onPress={() => navigation.navigate('List',{searchActive: true, cowList: cowList, sickCows: sickCows, sickKeys: sickKeys, currentTab: 'all', microphoneOn: microphoneOn})}
         style={styles.homeSearchBg}>
-        <Text style={{color: 'black', fontSize: 13, marginRight: 5, marginLeft: 2}}>Haku</Text>
-        <Image source={searchBlack} 
+        <Text style={{color: 'white', fontSize: 13, marginRight: 5, marginLeft: 2}}>Haku</Text>
+        <Image source={searchWhite} 
           style={{width: 20, height: 20}}
           />
       </TouchableOpacity>
@@ -142,6 +147,8 @@ export default function Home({navigation}) {
                 cowNumber={key}
                 cowName={cowList[key].name}
                 temperature={cowList[key].temperature}
+                procedures={cowList[key].procedures}
+                procedureIDs={getProcedureIDs(cowList[key].procedures)}
                 // trembling={cowList[key].trembling}
               />
             
@@ -156,9 +163,7 @@ export default function Home({navigation}) {
       </>
     }
 
-    {/* <TouchableOpacity style={styles.grayButton} onPress={() => navigation.navigate('Camera', {keys: cowKeys, cowList: cowList})}>
-        <Text style={styles.buttonText}>Camera</Text>
-    </TouchableOpacity> */}
+    
 
       <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
       <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 

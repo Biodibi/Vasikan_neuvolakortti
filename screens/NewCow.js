@@ -9,7 +9,13 @@ export default function Home({navigation, route}) {
   const [cowNumber, setCowNumber] = useState('');
   const [cowName, setCowName] = useState('');
   const [temperature, setTemperature] = useState('');
+  const [procedure, setProcedure] = useState('');
 
+  const timestampUnix = Date.now();
+  const dateObject = new Date(timestampUnix);
+  const time = dateObject.toLocaleTimeString().substring(0, 5);
+  const date = dateObject.getDate()+"."+dateObject.getMonth()+"."+dateObject.getFullYear();
+  const datetime = date + " " + time;
 //   const [trembling, setTrembling] = useState(null);
 //   const tremblingOptions = [
 //     {label: 'Yes', value: true},
@@ -31,12 +37,6 @@ export default function Home({navigation, route}) {
     })
   }, []);
 
-  /* useEffect(() => {
-    if (route.params?.cowNumber) {
-      setCowNumber(route.params?.cowNumber);
-    }
-  }, [route.params?.cowNumber]);
- */
   let cowKeys = Object.keys(cowList);
 
   function checkCorrectFormat(number) {
@@ -65,25 +65,37 @@ export default function Home({navigation, route}) {
     if (cowNumber.trim() !== '') {
       // then if number format is incorrect, program is halted
         if (checkCorrectFormat(cowNumber) === false) {
-          // alert('Tarkista korvanumero. Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.');
           Alert.alert("Tarkista korvanumero","Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.",[{ text: "OK" }]);
           return;
         }
       // proceeding (cow number format is correct)
       // checking if this cow already exists (to prevent overwriting)
         if (checkIfExists(cowNumber) === true) {
-            // alert('Tämä vasikka on jo tietokannassa. Jos haluat muokata olemassa olevan vasikan tietoja, etsi ko. vasikka listasta, tai vaihtoehtoisesti skannaa tai sanele korvanumero.');
             Alert.alert("Tämä vasikka on jo tietokannassa","Jos haluat muokata olemassa olevan vasikan tietoja, etsi ko. vasikka listasta, tai vaihtoehtoisesti skannaa tai sanele korvanumero.",[{ text: "OK" }]);
             return;
         } else {
           // Json parse used to prevent sending undefined values to database (undefined is not allowed)
-        let saveData = JSON.parse(JSON.stringify({ name: cowName,
-            temperature: temperature,
-          }))
-      /*   if (inProgress) {
-            update(ref(db, ROOT_REF + index), saveData);
-        } */
-        set(ref(db, ROOT_REF + cowNumber), saveData)
+          let saveData = {};
+          if (procedure) {
+            saveData = JSON.parse(JSON.stringify({ 
+               name: cowName,
+               temperature: temperature,
+               procedures: {
+                 1: {
+                  description: procedure,
+                  date: date,
+                  time: time
+                 }
+               }      
+             }))
+           } else {
+            saveData = JSON.parse(JSON.stringify({ 
+             name: cowName,
+             temperature: temperature,
+             procedures: "" 
+           }))
+           }
+       set(ref(db, ROOT_REF + cowNumber), saveData)
         .then(() => {
             navigation.navigate('Home'); // Data saved successfully!
           })
@@ -120,6 +132,11 @@ export default function Home({navigation, route}) {
                 keyboardType='numeric' />
 
                 
+            <Text style={styles.textInputLabel}>Toimeenpide</Text>
+            <TextInput style={styles.textInput} placeholder='Vapaa kuvaus ...' multiline={true}
+                value={procedure} placeholderTextColor='#a3a3a3' onChangeText={setProcedure} 
+                />
+           
             {/*  <Text>Trembling?</Text>
             <Radiobutton options={tremblingOptions} 
                 onPress={(value) => {setTrembling(value)}} /> */}
@@ -128,7 +145,6 @@ export default function Home({navigation, route}) {
             </TouchableOpacity>
         </View>
     
-      {/* no global functionality to toggling microphone yet; useState in App.js? */}
     <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
         </View>
     </TouchableWithoutFeedback>
