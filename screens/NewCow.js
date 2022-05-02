@@ -171,14 +171,16 @@ export default function Home({ navigation, route }) {
       } else {
         // Json parse used to prevent sending undefined values to database (undefined is not allowed)
         let saveData = {};
+        let nameFormatted = cowName.charAt(0).toUpperCase() + cowName.slice(1);
         let temperatureFormatted = temperature.toString().replace(/,/g, '.');
         if (procedure) {
+          let procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1)+'.';
           saveData = JSON.parse(JSON.stringify({
-            name: cowName,
+            name: nameFormatted,
             temperature: temperatureFormatted,
             procedures: {
               1: {
-                description: procedure,
+                description: procedureFormatted,
                 date: date,
                 time: time,
                 timestampUnix: timestampUnix
@@ -187,7 +189,7 @@ export default function Home({ navigation, route }) {
           }))
         } else {
           saveData = JSON.parse(JSON.stringify({
-            name: cowName,
+            name: nameFormatted,
             temperature: temperatureFormatted,
             procedures: ""
           }))

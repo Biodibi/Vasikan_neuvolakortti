@@ -121,40 +121,43 @@ export default function Individual({navigation, route}) {
     function saveChanges() {
         let upToDateProcedures = procedures;
         let saveData = {};
+        let nameFormatted = cowName.charAt(0).toUpperCase() + cowName.slice(1);
         let temperatureFormatted = temperature.toString().replace(/,/g, '.');
         // Json parse used to prevent sending undefined values to database (undefined is not allowed)
         if (procedures && newProcedureDesc) { 
             // if user logged new procedure while editing AND prev. procedures exist
             let proceduresToArray = Array.from(procedures);
-            proceduresToArray.splice(procedures.length, 0, {description:newProcedureDesc, time: time, date:date});  
+            let procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
+            proceduresToArray.splice(procedures.length, 0, {description:procedureFormatted, time: time, date:date});  
             saveData = JSON.parse(JSON.stringify({ 
-                name: cowName,
+                name: nameFormatted,
                 temperature: temperatureFormatted,
                 procedures: proceduresToArray
               }))
        
         } else if (!procedures && newProcedureDesc) { // ok
             // prev. procedures do not exist BUT user logged the first one now
+            let procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
             upToDateProcedures = {
                 1: {
-                 description: newProcedureDesc,
+                 description: procedureFormatted,
                  date: date,
                  time: time
                 }}; 
                 saveData = JSON.parse(JSON.stringify({ 
-                    name: cowName,
+                    name: nameFormatted,
                     temperature: temperatureFormatted,
                     procedures: upToDateProcedures
                   }))
         } else if (procedures && !newProcedureDesc) {
             saveData = JSON.parse(JSON.stringify({ 
-                name: cowName,
+                name: nameFormatted,
                 temperature: temperatureFormatted,
                 procedures: procedures
               }))
         } else {
             saveData = JSON.parse(JSON.stringify({ 
-                name: cowName,
+                name: nameFormatted,
                 temperature: temperatureFormatted,
                 procedures: ""
               }))
