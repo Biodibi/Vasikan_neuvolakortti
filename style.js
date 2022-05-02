@@ -8,6 +8,22 @@ const styles = StyleSheet.create({
         flex: 1,
         
       },
+      main2: {
+        // paddingTop: 10,
+        // paddingHorizontal: 20,
+        backgroundColor: '#fff',
+        flex: 1,
+      },
+      mainForm: {
+        paddingTop: 10,
+        paddingHorizontal: 20,
+    },
+      mainNewCow: {
+        paddingTop: 10,
+        paddingHorizontal: 20,
+        backgroundColor: '#fff',
+        flex: 4
+      },
       row: {
         flexDirection: 'row',
         marginVertical: 10,
@@ -174,7 +190,35 @@ const styles = StyleSheet.create({
         marginBottom: 5
     },
     procedureList: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderColor: '#e6e6e6',
+        borderWidth: 1,
+        borderRadius: 10,
+    },
+    editProcedureText: {
+        flexDirection: 'row', left: 10
+    },
+    procedureListDesc: {
+        color: 'black', paddingLeft: 5, paddingRight: 5
+    },
+    endButtonArea: {
+        flex: 3,
+    },
+  bottomImage: {
+        position: 'absolute',
+        bottom: 0,
+        right: 1,
+        left: 1,
+      //  height: 50,
+        width: '100%'
+      },
+      imageStyle: {
+        height: 200,
+        flex: 1,
+        width: null,
+        bottom: 0,
+        right: 1,
+        left: 1,
     }
 })
 

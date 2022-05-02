@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
-import {Text,View,StyleSheet,Button,TouchableOpacity, TextInput, Alert, ScrollView, TouchableWithoutFeedback,Keyboard} from 'react-native';
+import {Text,View,TouchableOpacity, TextInput, Alert, Image, TouchableWithoutFeedback,Keyboard} from 'react-native';
 import {db, ROOT_REF} from '../firebase/Config';
 import { ref, set } from "firebase/database";
 import styles from '../style'
 import MicFAB from '../components/MicFAB';
+import cowsImage from '../icons/cowsImage.png';
 
 export default function Home({navigation, route}) {
   const [cowNumber, setCowNumber] = useState('');
@@ -14,7 +15,8 @@ export default function Home({navigation, route}) {
   const timestampUnix = Date.now();
   const dateObject = new Date(timestampUnix);
   const time = dateObject.toLocaleTimeString().substring(0, 5);
-  const date = dateObject.getDate()+"."+dateObject.getMonth()+"."+dateObject.getFullYear();
+  const month = dateObject.getMonth()+1;
+  const date = dateObject.getDate()+"."+month+"."+dateObject.getFullYear();
   const datetime = date + " " + time;
 //   const [trembling, setTrembling] = useState(null);
 //   const tremblingOptions = [
@@ -23,6 +25,7 @@ export default function Home({navigation, route}) {
 //   ];
 
   const [cowList, setCowList] = useState({});
+  const [keyboardStatus, setKeyboardStatus] = useState(true);
 
   useEffect(() => { // get cowkeys from home.js instead of fetching database again here...
     if (route.params?.cowNumber) { 
@@ -35,6 +38,17 @@ export default function Home({navigation, route}) {
       let cows = {...data};
       setCowList(cows);
     })
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus(true);
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus(false);
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
   }, []);
 
   let cowKeys = Object.keys(cowList);
@@ -85,7 +99,8 @@ export default function Home({navigation, route}) {
                  1: {
                   description: procedure,
                   date: date,
-                  time: time
+                  time: time,
+                  timestampUnix: timestampUnix
                  }
                }      
              }))
@@ -114,9 +129,9 @@ export default function Home({navigation, route}) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.main}>
+        <View style={styles.main2}>
+          <View style={styles.mainForm}>
             <Text style={styles.header}>Lisää uusi vasikka tietokantaan</Text>
-
             <View style={styles.formArea}>
             <Text style={styles.textInputLabel}>Korvanumero *</Text>
             <TextInput style={styles.textInput} maxLength={4} autoFocus={true} 
@@ -132,21 +147,29 @@ export default function Home({navigation, route}) {
                 value={temperature} placeholderTextColor='#a3a3a3' onChangeText={setTemperature} 
                 keyboardType='numeric' />
 
-                
-            <Text style={styles.textInputLabel}>Toimeenpide</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.textInputLabel}>Toimenpide   </Text>
+              <Text style={styles.helpText}>{date}</Text>
+            </View>
+            
             <TextInput style={styles.textInput} placeholder='Vapaa kuvaus ...' multiline={true}
                 value={procedure} placeholderTextColor='#a3a3a3' onChangeText={setProcedure} 
                 />
-           
-            {/*  <Text>Trembling?</Text>
-            <Radiobutton options={tremblingOptions} 
-                onPress={(value) => {setTrembling(value)}} /> */}
+           </View>  
+           <View style={{marginBottom: 30, marginRight: 10}}>
             <TouchableOpacity style={styles.customButton} onPress={() => addNewCow()}>
                 <Text style={styles.buttonText}>Lisää vasikka</Text>
-            </TouchableOpacity>
-        </View>
-    
-    <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
+              </TouchableOpacity>
+              </View>
+           </View>
+
+           
+             {keyboardStatus ? null : <Image source={cowsImage} style={styles.imageStyle}/>}
+              
+
+          
+        
+          <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
         </View>
     </TouchableWithoutFeedback>
    

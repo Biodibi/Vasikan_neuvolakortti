@@ -81,30 +81,22 @@ export default function Individual({navigation, route}) {
         <View style={styles.main}>
 
             <View style={styles.titleRow}>            
-                <Text style={styles.header}># {route.params?.cowID}</Text>
-            </View>                
-            <Text style={styles.header}>Toimenpide ajalta {date}, {time}</Text>
+                <Text style={styles.header}>Vasikka #{route.params?.cowID}</Text>
+                <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 10,}}>
+                        <Image source={trashRed} style={{height: 20, width: 20}} />
+                        <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista toimenpide</Text>
+                    </TouchableOpacity>
+            </View>    
 
-            <Text style={styles.subHeader}></Text>
-
-        
-
-                <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
-                placeholder='Vapaa kuvaus ...' value={procedure} multiline={true}
-                onChangeText={setProcedure} />
+            <Text style={styles.textInputLabel}>Toimenpide ajalta {date}, {time}</Text>
+            <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
+            placeholder='Vapaa kuvaus ...' value={procedure} multiline={true}
+            onChangeText={setProcedure} />
            
-           
-        
-            
-        <TouchableOpacity style={styles.customButton} onPress={() => saveChanges()}>
-            <Text style={styles.buttonText}>Tallenna muutokset</Text>
-        </TouchableOpacity>    
+            <TouchableOpacity style={styles.customButton} onPress={() => saveChanges()}>
+                <Text style={styles.buttonText}>Tallenna muutokset</Text>
+            </TouchableOpacity>    
 
-        <TouchableOpacity style={styles.grayButton} onPress={() => confirmBeforeRemove()}>
-            <Image source={trashRed} style={{height: 20, width: 20}} />
-            <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista tämä toimenpide</Text>
-        </TouchableOpacity>
-            
             <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
 
         </View>

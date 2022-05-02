@@ -17,7 +17,8 @@ export default function Individual({navigation, route}) {
     const timestampUnix = Date.now();
     const dateObject = new Date(timestampUnix);
     const time = dateObject.toLocaleTimeString().substring(0, 5);
-    const date = dateObject.getDate()+"."+dateObject.getMonth()+"."+dateObject.getFullYear();
+    const month = dateObject.getMonth()+1;
+    const date = dateObject.getDate()+"."+month+"."+dateObject.getFullYear();
     const [newFirst, setNewFirst] = useState(true);
 
     // const [trembling, setTrembling] = useState(null);
@@ -124,8 +125,8 @@ export default function Individual({navigation, route}) {
         
         <View style={styles.main}>
                 <View style={styles.titleRow}>            
-                    <Text style={styles.header}># {index}</Text>
-                    <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 20,}}>
+                    <Text style={styles.header}>Vasikka #{index}</Text>
+                    <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 10,}}>
                         <Image source={trashRed} style={{height: 20, width: 20}} />
                         <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista vasikka</Text>
                     </TouchableOpacity>
@@ -144,7 +145,8 @@ export default function Individual({navigation, route}) {
                             onChangeText={setTemperature} keyboardType='numeric' />
 
                         <Text style={styles.textInputLabel}>Toimenpiteet</Text>
-                        <Text>➥ Uusi toimenpide</Text>
+                        <Text>➥ Uusi toimenpide   {date}, {time}</Text>
+
                         <TextInput style={styles.textInput} placeholderTextColor='#a3a3a3' 
                             placeholder='Vapaa kuvaus ...' value={newProcedureDesc}
                             onChangeText={setNewProcedureDesc} multiline={true}/>
@@ -160,39 +162,54 @@ export default function Individual({navigation, route}) {
                     <Text style={styles.textInputLabel}>{newFirst ? "  Uusin ensin" : "  Vanhin ensin"}</Text>
                 </TouchableOpacity>
             </View>
-            <ScrollView style={styles.procedureList}>
-                {newFirst ? 
-                <>
+        <View style={{maxHeight: '40%'}}>
+        <ScrollView style={styles.procedureList}>
+            {newFirst ? 
+        //   <ScrollView style={styles.procedureList}>
+              <>
                 {procedureIDs.map(key => ( 
-                <View key={key} style={{flexDirection: 'row', paddingTop: 8}}>
-                    <View>
+                
+            <View key={key} style={{marginBottom: 10}}>
+                <View 
+                    style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
+                    <View style={{width: '75%'}}>
                         <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
-                        <Text>"{procedures[key].description}"</Text>
+                       
                     </View>
-                    <TouchableOpacity style={{right: 20, position: 'absolute'}}
+                    <TouchableOpacity style={styles.editProcedureText}
                         onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
                         <Text>Muokkaa</Text>
                     </TouchableOpacity>
+                </View> 
+                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>
+                </View>
+            
+                ))}
+                </>
+                // </ScrollView>
+                :
+                // <ScrollView style={styles.procedureList}>
+                    <>
+            {procedureIDsAsc.map(key => ( 
+        
+                <View key={key} style={{marginBottom: 10}}>
+                <View 
+                    style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
+                    <View style={{width: '75%'}}>
+                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
+                       
+                    </View>
+                    <TouchableOpacity style={styles.editProcedureText}
+                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
+                        <Text>Muokkaa</Text>
+                    </TouchableOpacity>
+                </View> 
+                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>
                 </View>
                 ))}
                 </>
-                :
-                <>
-            {procedureIDsAsc.map(key => ( 
-                <View key={key} style={{flexDirection: 'row'}}>
-                    <View>
-                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
-                        <Text>"{procedures[key].description}"</Text>
-                    </View>
-                    <TouchableOpacity style={{right: 20, position: 'absolute', flexDirection: 'row'}}
-                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
-                        <Text>Muokkaa</Text>
-                    </TouchableOpacity>
-                </View>
-                ))}
-                </>}
+                }</ScrollView></View>
             
-                </ScrollView>
             </>
             : // No procedures logged before
             <Text style={{fontStyle: 'italic', marginLeft: 10, marginBottom: 10}}>Ei aiempia toimenpiteitä.</Text>}

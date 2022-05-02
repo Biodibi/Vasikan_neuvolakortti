@@ -155,7 +155,8 @@ export default function Camera({navigation, route}) {
                 Havaitaan koodia
               </Text>
               </>
-            : null}
+            :  null
+          }
 
         <TouchableOpacity onPress={() => captureHandle()}>
           <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
@@ -182,16 +183,18 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   button: {
-    height: 80,
+    height: 115,
+    width: 115,
     fontSize: 30,
     flex: 0,
-    backgroundColor: '#01693f',
-    borderRadius: 50,
+    backgroundColor: '#22bc09',
+    borderRadius: 70,
     borderWidth: 5,
-    borderColor: '#007546',
+    borderColor: '#55c244',
     padding: 15,
     alignSelf: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
     margin: 20,
   },
   scanStatus: {

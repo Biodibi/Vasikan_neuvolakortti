@@ -118,10 +118,10 @@ export default function Settings({navigation, route}) {
             <TouchableOpacity style={styles.customButton} onPress={() => checkValues()}>
                 <Text style={styles.buttonText}>Tallenna ja palaa</Text>
             </TouchableOpacity>
-            <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+            {/* <View style={{flexDirection: 'row', alignSelf: 'center'}}>
             <Image source={info} style={{height: 17, width: 17, marginTop: 7, marginRight: 10}}/>
             <Text style={styles.helpText}>Sairaiden vasikoiden lajittelu: Uusien raja-arvojen käyttöönotto tällä laitteella vaatii sovelluksen uudelleenkäynnistyksen.</Text>
-            </View>
+            </View> */}
 
 
                  <View style={styles.lineBreak} /> 
