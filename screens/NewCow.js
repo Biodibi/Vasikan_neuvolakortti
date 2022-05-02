@@ -174,7 +174,12 @@ export default function Home({ navigation, route }) {
         let nameFormatted = cowName.charAt(0).toUpperCase() + cowName.slice(1);
         let temperatureFormatted = temperature.toString().replace(/,/g, '.');
         if (procedure) {
-          let procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1)+'.';
+          let procedureFormatted = '';
+          if (procedure.endsWith('.') || procedure.endsWith('!') || procedure.endsWith('?')) {
+            procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1);
+          } else {
+            procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1)+'.';
+          }
           saveData = JSON.parse(JSON.stringify({
             name: nameFormatted,
             temperature: temperatureFormatted,

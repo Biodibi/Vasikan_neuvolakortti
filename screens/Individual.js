@@ -127,7 +127,12 @@ export default function Individual({navigation, route}) {
         if (procedures && newProcedureDesc) { 
             // if user logged new procedure while editing AND prev. procedures exist
             let proceduresToArray = Array.from(procedures);
-            let procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
+            let procedureFormatted = '';
+            if (newProcedureDesc.endsWith('.') || newProcedureDesc.endsWith('!') || newProcedureDesc.endsWith('?')) {
+                procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1);
+            } else {
+                procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
+            }
             proceduresToArray.splice(procedures.length, 0, {description:procedureFormatted, time: time, date:date});  
             saveData = JSON.parse(JSON.stringify({ 
                 name: nameFormatted,
@@ -137,7 +142,12 @@ export default function Individual({navigation, route}) {
        
         } else if (!procedures && newProcedureDesc) { // ok
             // prev. procedures do not exist BUT user logged the first one now
-            let procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
+            let procedureFormatted = '';
+            if (newProcedureDesc.endsWith('.') || newProcedureDesc.endsWith('!') || newProcedureDesc.endsWith('?')) {
+                procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1);
+            } else {
+                procedureFormatted = newProcedureDesc.charAt(0).toUpperCase() + newProcedureDesc.slice(1)+'.';
+            }
             upToDateProcedures = {
                 1: {
                  description: procedureFormatted,
