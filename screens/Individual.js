@@ -7,6 +7,7 @@ import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import trashRed from '../icons/trash-red.png';
 import sort from '../icons/sort.png';
+import Voice from '@react-native-community/voice'
 
 export default function Individual({navigation, route}) {
     const [index, setIndex] = useState(null);
@@ -20,6 +21,81 @@ export default function Individual({navigation, route}) {
     const month = dateObject.getMonth()+1;
     const date = dateObject.getDate()+"."+month+"."+dateObject.getFullYear();
     const [newFirst, setNewFirst] = useState(true);
+
+    const [voiceText, setVoiceText] = useState('');
+    const commands = [
+        {
+            command: "nimi",
+        },
+        {
+            command: "ruumiinlämpö",
+        },
+        {
+            command: "toimenpide",
+        },
+    ];
+
+    useEffect(() => {
+        Voice.destroy().then(Voice.removeAllListeners);
+        Voice.onSpeechStart = onSpeechStartHandler;
+        Voice.onSpeechRecognized = onSpeechRecognizedHandler;
+        Voice.onSpeechEnd = onSpeechEndHandler;
+        Voice.onSpeechPartialResults = onSpeechPartialResultsHandler;
+        Voice.onSpeechResults = onSpeechResultsHandler;
+
+        return () => {
+            Voice.destroy().then(Voice.removeAllListeners);
+        }
+    }, [])
+
+    const onSpeechStartHandler = (e) => {
+        console.log("start handler individual==>>>", e)
+    }
+
+    const onSpeechRecognizedHandler = (e) => {
+        console.log("Recognizer individual==>>>", e)
+    }
+
+    const onSpeechEndHandler = (e) => {
+        console.log("stop handler", e)
+        Voice.start('fi-FI')
+    }
+
+    const onSpeechPartialResultsHandler = (e) => {
+        setVoiceText((e.value[0]).toLocaleLowerCase())
+        commands.forEach((item) => {
+            if ((e.value[0]).includes(item.command)) {
+                if (item.command == "nimi") {
+                    setCowName((e.value[0]).replace(item.command, " ").trim())
+                } if (item.command == "ruumiinlämpö") {
+                    setTemperature((e.value[0]).replace(item.command, " ").trim())
+                } if (item.command == "toimenpide") {
+                    setNewProcedureDesc((e.value[0]).replace(item.command, " ").trim())
+                } 
+            }
+            console.log(voiceText)
+        });
+    }
+
+    const onSpeechResultsHandler = (e) => {
+        console.log("speech result handler", e)
+    }
+
+    const startRecording = async () => {
+        try {
+            await Voice.start('fi-FI')
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
+
+    const stopRecording = async () => {
+        try {
+            await Voice.stop()
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
 
     // const [trembling, setTrembling] = useState(null);
     // const tremblingOptions = [
@@ -229,7 +305,7 @@ export default function Individual({navigation, route}) {
         </View>       
             
             {/* no global functionality to toggling microphone yet; useState in App.js? */}
-            <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
+            <MicFAB title="microphone-on" onPress={startRecording} />
 
         </View>
         
