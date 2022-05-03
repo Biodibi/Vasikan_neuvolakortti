@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Pressable, TouchableWithoutFeedback, Keyboard, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native';
 import {db, ROOT_REF} from '../firebase/Config';
 import { ref, update } from "firebase/database";
-import Radiobutton from '../components/Radiobutton';
 import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import trashRed from '../icons/trash-red.png';
 import sort from '../icons/sort.png';
-import Voice from '@react-native-community/voice'
+import Voice from '@react-native-community/voice';
 
 export default function Individual({navigation, route}) {
     const [index, setIndex] = useState(null);
@@ -21,6 +20,9 @@ export default function Individual({navigation, route}) {
     const month = dateObject.getMonth()+1;
     const date = dateObject.getDate()+"."+month+"."+dateObject.getFullYear();
     const [newFirst, setNewFirst] = useState(true);
+    const [cow, setCow] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [updatedDesc, setUpdatedDesc] = useState('');
 
     const [voiceText, setVoiceText] = useState('');
     const commands = [
@@ -97,27 +99,37 @@ export default function Individual({navigation, route}) {
         }
     }
 
-    // const [trembling, setTrembling] = useState(null);
-    // const tremblingOptions = [
-    //     {label: 'Yes', value: true},
-    //     {label: 'No', value: false}
-    //   ]; //Need to find a way to not have to repeat the options on every screen
-   
     useEffect(() => {
             if (route.params?.cow) {
+                setCow(route.params?.cow)
                 setCowName(route.params?.cow.name);
                 setTemperature(route.params?.cow.temperature);
                 setProcedures(route.params?.cow.procedures);
                 setIndex(route.params?.key);
+                setLoading(false);               
             } else {
                 Alert.alert("Virhe","Vasikan tietojen haku epäonnistui.",[{ text: "OK", onPress: () => navigation.navigate("Home") }]);
-            }
+            } 
+        
         }, [])
+    let procedureIDs = Object.keys(procedures).reverse(); //new entries first
+    let procedureIDsAsc = Object.keys(procedures); //old entries first
+
+    useEffect(() => {
+        setLoading(false);
+        if (route.params?.procedureEdited) {
+            setProcedures(route.params?.cow.procedures);
+
+                const newArray = [...procedures];
+                newArray[route.params?.procedureEditedID].description = route.params?.procedureEdited;
+                setUpdatedDesc(route.params?.procedureEdited);
+                procedureIDs = Object.keys(procedures).reverse(); //new entries first
+                procedureIDsAsc = Object.keys(procedures); //old entries first
+        }
+   
+    }, [route.params?.procedureEdited,])
+
     
-      let procedureIDs = Object.keys(procedures).reverse(); //new entries first
-      let procedureIDsAsc = Object.keys(procedures); //old entries first
-
-
     function saveChanges() {
         let upToDateProcedures = procedures;
         let saveData = {};
@@ -242,82 +254,92 @@ export default function Individual({navigation, route}) {
                 </View>
                 </TouchableWithoutFeedback>
 
-            {procedures ? // Procedures have been logged before
+            {!loading ? 
             <>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={{color: 'black'}}>Aiemmat toimenpiteet ({procedureIDs.length})</Text>
-                <TouchableOpacity style={{right: 10, position: 'absolute', flexDirection: 'row'}} onPress={() => toggleOrder()}>
-                <Image source={sort} style={{height: 15, width: 15}} />
-                    <Text style={styles.textInputLabel}>{newFirst ? "  Uusin ensin" : "  Vanhin ensin"}</Text>
-                </TouchableOpacity>
-            </View>
-        <View style={{maxHeight: '40%'}}>
-        <ScrollView style={styles.procedureList}>
-            {newFirst ? 
-        //   <ScrollView style={styles.procedureList}>
-              <>
-                {procedureIDs.map(key => ( 
-                
-            <View key={key} style={{marginBottom: 10}}>
-                <View 
-                    style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
-                    <View style={{width: '75%'}}>
-                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
-                       
-                    </View>
-                    <TouchableOpacity style={styles.editProcedureText}
-                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
-                        <Text>Muokkaa</Text>
-                    </TouchableOpacity>
-                </View> 
-                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>
-                </View>
+            {procedures ? // Procedures have been logged before
+                        <>
+                        <View style={{flexDirection: 'row'}}>
+                            
+                            <Text style={{color: 'black'}}>Aiemmat toimenpiteet ({procedureIDs.length})</Text>
+                            <TouchableOpacity style={{right: 10, position: 'absolute', flexDirection: 'row'}} onPress={() => toggleOrder()}>
+                            <Image source={sort} style={{height: 15, width: 15}} />
+                                <Text style={styles.textInputLabel}>{newFirst ? "  Uusin ensin" : "  Vanhin ensin"}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    <View style={{maxHeight: '40%'}}>
+                    <ScrollView style={styles.procedureList}>
+                        {newFirst ? 
+                        <>
+                            {procedureIDs.map(key => ( 
+                            
+                        <View key={key} style={{marginBottom: 10}}>
+                            <View 
+                                style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
+                                <View style={{width: '75%'}}>
+                                    <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
+                                
+                                </View>
+                                    
+                                  <TouchableOpacity style={styles.editProcedureText}
+                                    onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: cow, cowID: index, procedureID: key})}>
+                                    <Text>Muokkaa</Text>
+                                </TouchableOpacity>
+                            </View> 
+                            
             
-                ))}
-                </>
-                // </ScrollView>
-                :
-                // <ScrollView style={styles.procedureList}>
-                    <>
-            {procedureIDsAsc.map(key => ( 
-        
-                <View key={key} style={{marginBottom: 10}}>
-                <View 
-                    style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
-                    <View style={{width: '75%'}}>
-                        <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
-                       
-                    </View>
-                    <TouchableOpacity style={styles.editProcedureText}
-                        onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: route.params?.cow, cowID: index, procedureID: key})}>
-                        <Text>Muokkaa</Text>
-                    </TouchableOpacity>
-                </View> 
-                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>
-                </View>
-                ))}
-                </>
-                }</ScrollView></View>
+                                 {route.params?.procedureEdited && procedures[key] === route.params?.procedureEditedID ? 
+                                <Text style={styles.procedureListDesc}>"{updatedDesc}"</Text> 
+                                : 
+                                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>}
+                             
             
-            </>
-            : // No procedures logged before
-            <Text style={{fontStyle: 'italic', marginLeft: 10, marginBottom: 10}}>Ei aiempia toimenpiteitä.</Text>}
+                            </View>
+                        
+                            ))}
+                            </>
+                            :
+                                <>
+                        {procedureIDsAsc.map(key => ( 
+                    
+                            <View key={key} style={{marginBottom: 10}}>
+                            <View 
+                                style={{flexDirection: 'row', paddingVertical: 5, paddingLeft: 5}}>
+                                <View style={{width: '75%'}}>
+                                    <Text style={{fontStyle: 'italic'}}>{procedures[key].date}, {procedures[key].time}</Text>
+                                
+                                </View>
+                                  <TouchableOpacity style={styles.editProcedureText}
+                                    onPress={() => navigation.navigate('EditProcedure', {procedureIDs: procedureIDs,cow: cow, cowID: index, procedureID: key})}>
+                                    <Text>Muokkaa</Text>
+                                </TouchableOpacity>
+                            </View>                                 
+                                
+                                 {route.params?.procedureEdited && procedures[key] === route.params?.procedureEditedID ? 
+                                <Text style={styles.procedureListDesc}>"{updatedDesc}"</Text> 
+                                : 
+                                <Text style={styles.procedureListDesc}>"{procedures[key].description}"</Text>}
+                                
+                                 
+                            </View>
+                            ))}
+                            </>
+                            }</ScrollView></View>
+                        </>
+                        : // No procedures logged before
+                        <Text style={{fontStyle: 'italic', marginLeft: 10, marginBottom: 10}}>Ei aiempia toimenpiteitä.</Text>
+                        }
+                        </>
+            : <Text style={{marginLeft: 10}}>Toimenpiteitä ladataan...</Text>}
+            
 
            
            
-           {/* <Text>Trembling?</Text>
-            <Radiobutton options={tremblingOptions} value={trembling}
-                onPress={(value) => {setTrembling(value)}} /> */}
-            
-            
-            
         <View style={{marginBottom: 30, marginRight: 10}}>
             <TouchableOpacity style={styles.customButton} onPress={() => saveChanges()}>
                 <Text style={styles.buttonText}>Tallenna muutokset</Text>
             </TouchableOpacity>       
         </View>       
             
-            {/* no global functionality to toggling microphone yet; useState in App.js? */}
             <MicFAB title="microphone-on" onPress={startRecording} />
 
         </View>

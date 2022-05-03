@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, Pressable, Image, TouchableOpacity, ScrollView, TextInput, Alert} from 'react-native';
 import {db, ROOT_REF} from '../firebase/Config';
 import { ref, update } from "firebase/database";
-import Radiobutton from '../components/Radiobutton';
 import styles from '../style';
 import MicFAB from '../components/MicFAB';
 import trashRed from '../icons/trash-red.png';
@@ -17,10 +16,12 @@ export default function Individual({navigation, route}) {
     const [procedureIDs, setProcedureIDs] = useState([]);
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
+    const [cow, setCow] = useState('');
 
    
     useEffect(() => {
             if (route.params?.cow) {
+                setCow(route.params?.cow);
                 setCowName(route.params?.cow.name);
                 setTemperature(route.params?.cow.temperature);
                 setProcedureID(route.params?.procedureID);
@@ -44,7 +45,7 @@ export default function Individual({navigation, route}) {
             }
             update(ref(db, ROOT_REF + route.params?.cowID + "/procedures/" + procedureID), saveData)
         .then(() => {
-            navigation.navigate('Home'); // Data saved successfully!
+            navigation.navigate('Individual', {procedureEditedID: procedureID, procedureEdited: procedure, date: date, time: time, cow: cow, editedProcedures: procedures}); // Data saved successfully!
           })
           .catch((error) => {
             alert (error)   // The write failed...
