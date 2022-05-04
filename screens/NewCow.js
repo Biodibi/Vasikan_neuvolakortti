@@ -28,6 +28,22 @@ export default function Home({ navigation, route }) {
   const [cowList, setCowList] = useState({});
   const [keyboardStatus, setKeyboardStatus] = useState(true);
 
+  const [microphoneOn, setMicrophoneOn] = useState(false);
+
+  const toggleSwitch = () => setMicrophoneOn(previousState => !previousState); {
+    if (microphoneOn) {
+      Voice.start('fi-FI', 
+      { EXTRA_MAX_RESULTS: 100,
+        EXTRA_PARTIAL_RESULTS: true,
+        EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS: 900000,
+        EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 900000,
+        EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS: 900000})
+    }if (!microphoneOn) {
+      Voice.stop()
+      Voice.destroy().then(Voice.removeAllListeners);
+    }
+  }
+
   const [voiceText, setVoiceText] = useState('');
   const commands = [
     {
@@ -41,6 +57,9 @@ export default function Home({ navigation, route }) {
     },
     {
       command: "toimenpide",
+    },
+    {
+      command: "takaisin",
     },
   ];
 
@@ -58,11 +77,11 @@ export default function Home({ navigation, route }) {
   }, [])
 
   const onSpeechStartHandler = (e) => {
-    console.log("start handler individual==>>>", e)
+    console.log("start handler new==>>>", e)
   }
 
   const onSpeechRecognizedHandler = (e) => {
-    console.log("Recognizer individual==>>>", e)
+    console.log("Recognizer new==>>>", e)
   }
 
   const onSpeechEndHandler = (e) => {
@@ -82,6 +101,10 @@ export default function Home({ navigation, route }) {
           setTemperature((e.value[0]).replace(item.command, " ").trim())
         } if (item.command == "toimenpide") {
           setProcedure((e.value[0]).replace(item.command, " ").trim())
+        } if (item.command == "takaisin") {
+          navigation.navigate('Home')
+          // Voice.stop()
+          // Voice.destroy().then(Voice.removeAllListeners)
         }
       }
       console.log(voiceText)
@@ -92,21 +115,22 @@ export default function Home({ navigation, route }) {
     console.log("speech result handler", e)
   }
 
-  const startRecording = async () => {
-    try {
-      await Voice.start('fi-FI')
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
+  // const startRecording = async () => {
+  //   try {
+  //     await Voice.start('fi-FI')
+  //   } catch (error) {
+  //     console.log("error", error)
+  //   }
+  // }
 
-  const stopRecording = async () => {
-    try {
-      await Voice.stop()
-    } catch (error) {
-      console.log("error", error)
-    }
-  }
+  // const stopRecording = async () => {
+  //   try {
+  //     await Voice.stop()
+  //   } catch (error) {
+  //     console.log("error", error)
+  //   }
+  // }
+
 
   useEffect(() => { // get cowkeys from home.js instead of fetching database again here...
     if (route.params?.cowNumber) {
@@ -178,7 +202,7 @@ export default function Home({ navigation, route }) {
           if (procedure.endsWith('.') || procedure.endsWith('!') || procedure.endsWith('?')) {
             procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1);
           } else {
-            procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1)+'.';
+            procedureFormatted = procedure.charAt(0).toUpperCase() + procedure.slice(1) + '.';
           }
           saveData = JSON.parse(JSON.stringify({
             name: nameFormatted,
@@ -250,6 +274,12 @@ export default function Home({ navigation, route }) {
             </TouchableOpacity>
           </View>
         </View>
+        {/* <TouchableOpacity style={styles.customButton} onPress={startRecording}>
+              <Text style={styles.buttonText}>alota</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.customButton} onPress={stopRecording}>
+              <Text style={styles.buttonText}>lopeta</Text>
+            </TouchableOpacity> */}
 
 
         {keyboardStatus ? null : <Image source={cowsImage} style={styles.imageStyle} />}
@@ -257,7 +287,8 @@ export default function Home({ navigation, route }) {
 
 
 
-        <MicFAB title="microphone-on" onPress={startRecording} />
+        <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
+        onPress={toggleSwitch} />
       </View>
     </TouchableWithoutFeedback>
 

@@ -11,6 +11,8 @@ import Settings from './screens/Settings';
 import { LogBox } from 'react-native';
 import List from './screens/List';
 
+// Ignore notification caused by Voice package 
+LogBox.ignoreLogs(['new NativeEventEmitter']); 
 
 export default function App() {
   const Stack = createNativeStackNavigator();

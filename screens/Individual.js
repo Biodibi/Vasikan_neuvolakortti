@@ -23,8 +23,24 @@ export default function Individual({navigation, route}) {
     const [cow, setCow] = useState(null);
     const [loading, setLoading] = useState(false);
     const [updatedDesc, setUpdatedDesc] = useState('');
-
     const [voiceText, setVoiceText] = useState('');
+
+      const [microphoneOn, setMicrophoneOn] = useState(false);
+
+    const toggleSwitch = () => setMicrophoneOn(previousState => !previousState); {
+        if (microphoneOn) {
+          Voice.start('fi-FI', 
+          { EXTRA_MAX_RESULTS: 100,
+            EXTRA_PARTIAL_RESULTS: true,
+            EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS: 900000,
+            EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 900000,
+            EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS: 900000})
+        }if (!microphoneOn) {
+          Voice.stop()
+          Voice.destroy().then(Voice.removeAllListeners);
+        }
+      }
+
     const commands = [
         {
             command: "nimi",
@@ -78,26 +94,26 @@ export default function Individual({navigation, route}) {
             console.log(voiceText)
         });
     }
-
+    
     const onSpeechResultsHandler = (e) => {
         console.log("speech result handler", e)
     }
 
-    const startRecording = async () => {
-        try {
-            await Voice.start('fi-FI')
-        } catch (error) {
-            console.log("error", error)
-        }
-    }
+    // const startRecording = async () => {
+    //     try {
+    //         await Voice.start('fi-FI')
+    //     } catch (error) {
+    //         console.log("error", error)
+    //     }
+    // }
 
-    const stopRecording = async () => {
-        try {
-            await Voice.stop()
-        } catch (error) {
-            console.log("error", error)
-        }
-    }
+    // const stopRecording = async () => {
+    //     try {
+    //         await Voice.stop()
+    //     } catch (error) {
+    //         console.log("error", error)
+    //     }
+    // }
 
     useEffect(() => {
             if (route.params?.cow) {
@@ -340,7 +356,8 @@ export default function Individual({navigation, route}) {
             </TouchableOpacity>       
         </View>       
             
-            <MicFAB title="microphone-on" onPress={startRecording} />
+            <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
+            onPress={toggleSwitch}  />
 
         </View>
         
