@@ -100,7 +100,7 @@ export default function Individual({navigation, route}) {
                 <Text style={styles.buttonText}>Tallenna muutokset</Text>
             </TouchableOpacity>    
 
-            <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
+            <MicFAB title="microphone-on" status="inactive" onPress={() => alert('Pressed Microphone')} />
 
         </View>
     )
