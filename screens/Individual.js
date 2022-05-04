@@ -24,6 +24,8 @@ export default function Individual({navigation, route}) {
     const [loading, setLoading] = useState(false);
     const [updatedDesc, setUpdatedDesc] = useState('');
 
+    const [micActive, setMicActive] = useState(false);
+
     const [voiceText, setVoiceText] = useState('');
     const commands = [
         {
@@ -84,6 +86,7 @@ export default function Individual({navigation, route}) {
     }
 
     const startRecording = async () => {
+        setMicActive(true);
         try {
             await Voice.start('fi-FI')
         } catch (error) {
@@ -345,7 +348,7 @@ export default function Individual({navigation, route}) {
             </TouchableOpacity>       
         </View>       
             
-            <MicFAB title="microphone-on" status="active" onPress={startRecording} />
+        <MicFAB status="active" title={micActive? "microphone-on" : "microphone-off"} onPress={startRecording} />
 
         </View>
         

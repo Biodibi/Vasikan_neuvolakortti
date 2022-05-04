@@ -8,9 +8,11 @@ import AddButton from './components/AddButton';
 import Camera from './screens/Camera';
 import EditProcedure from './screens/EditProcedure';
 import Settings from './screens/Settings';
-import { LogBox } from 'react-native';
 import List from './screens/List';
 
+import { LogBox } from 'react-native';
+LogBox.ignoreAllLogs();
+ 
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -35,7 +37,6 @@ export default function App() {
           
           options={{
             title: "Home",
-           // headerTitle: "Vasikan neuvolakortti",
             headerTitle: "VASIKAN NEUVOLAKORTTI",
             headerRight: () => (
                 <AddButton />
