@@ -122,7 +122,12 @@ export default function Individual({navigation, route}) {
 
                 const newArray = [...procedures];
                 newArray[route.params?.procedureEditedID].description = route.params?.procedureEdited;
-                setUpdatedDesc(route.params?.procedureEdited);
+                if (route.params?.procedureEdited  === null) {
+                    setUpdatedDesc("...");
+                } else {
+                   setUpdatedDesc(route.params?.procedureEdited);
+
+                }
                 procedureIDs = Object.keys(procedures).reverse(); //new entries first
                 procedureIDsAsc = Object.keys(procedures); //old entries first
         }
@@ -340,7 +345,7 @@ export default function Individual({navigation, route}) {
             </TouchableOpacity>       
         </View>       
             
-            <MicFAB title="microphone-on" onPress={startRecording} />
+            <MicFAB title="microphone-on" status="active" onPress={startRecording} />
 
         </View>
         

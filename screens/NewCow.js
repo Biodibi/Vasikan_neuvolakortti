@@ -257,7 +257,7 @@ export default function Home({ navigation, route }) {
 
 
 
-        <MicFAB title="microphone-on" onPress={startRecording} />
+        <MicFAB status="active" title="microphone-on" onPress={startRecording} />
       </View>
     </TouchableWithoutFeedback>
 

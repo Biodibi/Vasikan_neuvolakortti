@@ -260,7 +260,7 @@ export default function List({route, navigation}) {
                 </View>
             </View>
 <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
-      <MicFAB title="microphone-on"
+      <MicFAB title="microphone-on" status="inactive"
        /*  title={microphoneOn ? "microphone-on" : "microphone-off"} 
         o nPress={() => setMicrophoneOn(!microphoneOn)} */
         />
