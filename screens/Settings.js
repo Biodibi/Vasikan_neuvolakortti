@@ -138,7 +138,7 @@ export default function Settings({navigation, route}) {
             <Text style={styles.helpText}>Tämän valitseminen poistaa kaikki tämänhetkiset vasikat tietokannasta.</Text>
             </View>
 
-            <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
+            <MicFAB title="microphone-on" status="inactive" onPress={() => alert('Pressed Microphone')} />
             </>}
             
 
