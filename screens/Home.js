@@ -309,8 +309,8 @@ export default function Home({navigation,route}) {
     
       <Text>{num}</Text>
       <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
-      <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
-        onPress={toggleSwitch} />
+      <MicFAB status="inactive" title={microphoneOn ? "microphone-on" : "microphone-off"} 
+        onPress={() => setMicrophoneOn(!microphoneOn)} />
     </View>
     </TouchableWithoutFeedback>
   )

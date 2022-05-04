@@ -83,10 +83,12 @@ export default function Individual({navigation, route}) {
 
             <View style={styles.titleRow}>            
                 <Text style={styles.header}>Vasikka #{route.params?.cowID}</Text>
-                <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 10,}}>
+                
+                {/* Delete-option hidden until fix is found for database-indexing bug */}
+               {/*  <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 10,}}>
                         <Image source={trashRed} style={{height: 20, width: 20}} />
                         <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista toimenpide</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
             </View>    
 
             <Text style={styles.textInputLabel}>Toimenpide ajalta {date}, {time}</Text>
@@ -98,7 +100,7 @@ export default function Individual({navigation, route}) {
                 <Text style={styles.buttonText}>Tallenna muutokset</Text>
             </TouchableOpacity>    
 
-            <MicFAB title="microphone-on" onPress={() => alert('Pressed Microphone')} />
+            <MicFAB title="microphone-on" status="inactive" onPress={() => alert('Pressed Microphone')} />
 
         </View>
     )

@@ -13,6 +13,8 @@ export default function Home({ navigation, route }) {
   const [temperature, setTemperature] = useState('');
   const [procedure, setProcedure] = useState('');
 
+  const [micActive, setMicActive] = useState(false);
+
   const timestampUnix = Date.now();
   const dateObject = new Date(timestampUnix);
   const time = dateObject.toLocaleTimeString().substring(0, 5);
@@ -115,21 +117,14 @@ export default function Home({ navigation, route }) {
     console.log("speech result handler", e)
   }
 
-  // const startRecording = async () => {
-  //   try {
-  //     await Voice.start('fi-FI')
-  //   } catch (error) {
-  //     console.log("error", error)
-  //   }
-  // }
-
-  // const stopRecording = async () => {
-  //   try {
-  //     await Voice.stop()
-  //   } catch (error) {
-  //     console.log("error", error)
-  //   }
-  // }
+  const startRecording = async () => {
+    setMicActive(true);
+    try {
+      await Voice.start('fi-FI')
+    } catch (error) {
+      console.log("error", error)
+    }
+  }
 
 
   useEffect(() => { // get cowkeys from home.js instead of fetching database again here...
@@ -261,7 +256,7 @@ export default function Home({ navigation, route }) {
 
             <View style={{ flexDirection: 'row' }}>
               <Text style={styles.textInputLabel}>Toimenpide   </Text>
-              <Text style={styles.helpText}>{date}</Text>
+              <Text style={styles.helpText}>{date}, {time}</Text>
             </View>
 
             <TextInput style={styles.textInput} placeholder='Vapaa kuvaus ...' multiline={true}
@@ -287,8 +282,7 @@ export default function Home({ navigation, route }) {
 
 
 
-        <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
-        onPress={toggleSwitch} />
+        <MicFAB status="active" title={micActive? "microphone-on" : "microphone-off"} onPress={startRecording} />
       </View>
     </TouchableWithoutFeedback>
 

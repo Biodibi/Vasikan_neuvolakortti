@@ -23,6 +23,9 @@ export default function Individual({navigation, route}) {
     const [cow, setCow] = useState(null);
     const [loading, setLoading] = useState(false);
     const [updatedDesc, setUpdatedDesc] = useState('');
+
+    const [micActive, setMicActive] = useState(false);
+
     const [voiceText, setVoiceText] = useState('');
 
       const [microphoneOn, setMicrophoneOn] = useState(false);
@@ -99,13 +102,14 @@ export default function Individual({navigation, route}) {
         console.log("speech result handler", e)
     }
 
-    // const startRecording = async () => {
-    //     try {
-    //         await Voice.start('fi-FI')
-    //     } catch (error) {
-    //         console.log("error", error)
-    //     }
-    // }
+    const startRecording = async () => {
+        setMicActive(true);
+        try {
+            await Voice.start('fi-FI')
+        } catch (error) {
+            console.log("error", error)
+        }
+    }
 
     // const stopRecording = async () => {
     //     try {
@@ -138,7 +142,12 @@ export default function Individual({navigation, route}) {
 
                 const newArray = [...procedures];
                 newArray[route.params?.procedureEditedID].description = route.params?.procedureEdited;
-                setUpdatedDesc(route.params?.procedureEdited);
+                if (route.params?.procedureEdited  === null) {
+                    setUpdatedDesc("...");
+                } else {
+                   setUpdatedDesc(route.params?.procedureEdited);
+
+                }
                 procedureIDs = Object.keys(procedures).reverse(); //new entries first
                 procedureIDsAsc = Object.keys(procedures); //old entries first
         }
@@ -356,8 +365,7 @@ export default function Individual({navigation, route}) {
             </TouchableOpacity>       
         </View>       
             
-            <MicFAB title={microphoneOn ? "microphone-on" : "microphone-off"} 
-            onPress={toggleSwitch}  />
+        <MicFAB status="active" title={micActive? "microphone-on" : "microphone-off"} onPress={startRecording} />
 
         </View>
         
