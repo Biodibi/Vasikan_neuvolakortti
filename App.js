@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './screens/Home';
@@ -9,6 +9,7 @@ import Camera from './screens/Camera';
 import EditProcedure from './screens/EditProcedure';
 import Settings from './screens/Settings';
 import List from './screens/List';
+import SplashScreen from 'react-native-splash-screen'
 
 import { LogBox } from 'react-native';
 LogBox.ignoreAllLogs();
@@ -16,6 +17,10 @@ LogBox.ignoreAllLogs();
 
 export default function App() {
   const Stack = createNativeStackNavigator();
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, [])
 
   return (
     <NavigationContainer>

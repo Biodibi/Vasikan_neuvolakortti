@@ -84,7 +84,20 @@ export default function Individual({navigation, route}) {
             <View style={styles.titleRow}>            
                 <Text style={styles.header}>Vasikka #{route.params?.cowID}</Text>
                 
-                {/* Delete-option hidden until fix is found for database-indexing bug */}
+                {/* 
+
+                --- DELETE PROCEDURE-OPTION IS HIDDEN until fix is found for 
+                    database-indexing bug in order to avoid unwanted removal of data ---       
+                                            
+                    - Procedures are logged with index 1,2,3,.. and so on into Firebase. 
+                    - ERROR-> If number of procedures is smaller than the index of the oldest procedure, adding
+                      a new procedure overwrites/deletes earlier entries
+
+                   Example of error: 3 procedures exist under a cow in database. If user deletes 
+                        entries 1 & 2, procedures.length is 1 while oldest index is 3. Adding a new 
+                        procedure at this point will remove entry at index 3 and log the new entry at 
+                        index 0. After this adding new procedures continues as normal. */}
+
                {/*  <TouchableOpacity onPress={() => confirmBeforeRemove()} style={{flexDirection:'row',justifyContent: 'flex-end',position: "absolute", right: 10,}}>
                         <Image source={trashRed} style={{height: 20, width: 20}} />
                         <Text style={{marginLeft: 5,fontSize: 15, color: '#8c0010'}} >Poista toimenpide</Text>
