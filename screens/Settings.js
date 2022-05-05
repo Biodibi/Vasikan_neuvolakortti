@@ -89,6 +89,16 @@ export default function Settings({navigation, route}) {
     // remove all cows
     function removeConfirmed() {
     db.ref(ROOT_REF).remove();
+    Alert.alert(
+        "Tietokannan tyhjentäminen", "Tietojen poistaminen onnistui.",
+        [
+            {
+                text: "Palaa kotinäytölle",
+                onPress: () => navigation.navigate('Home'),
+            },
+    ],
+    {cancelable: true}
+    );
     }  
 
     return (
@@ -138,7 +148,7 @@ export default function Settings({navigation, route}) {
             <Text style={styles.helpText}>Tämän valitseminen poistaa kaikki tämänhetkiset vasikat tietokannasta.</Text>
             </View>
 
-            <MicFAB title="microphone-on" status="inactive" onPress={() => alert('Pressed Microphone')} />
+            <MicFAB title="microphone-on" status="inactive"  />
             </>}
             
 
