@@ -61,12 +61,6 @@ export default function Individual({ navigation, route }) {
             command: "takaisin",
         },
         {
-            command: "tallenna",
-        },
-        {
-            command: "poista",
-        },
-        {
             command: "Poista",
         },
     ];
@@ -106,11 +100,7 @@ export default function Individual({ navigation, route }) {
                     setTemperature((e.value[0]).replace(item.command, " ").trim())
                 } if (item.command == "toimenpide" || item.command == "Toimenpide") {
                     setNewProcedureDesc((e.value[0]).replace(item.command, " ").trim())
-                } if (item.command == "tallenna" || item.command == "Tallenna") {
-                    saveChanges()
-                } if (item.command == "poista" || item.command == "Poista") {
-                    removeThisCow()
-                } if (item.command == "takaisin") {
+                }  if (item.command == "takaisin") {
                     navigation.navigate('Home')
                 }
             }
