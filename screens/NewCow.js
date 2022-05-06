@@ -176,6 +176,10 @@ export default function Home({ navigation, route }) {
 
   function checkCorrectFormat(number) {
     let cowNumber = (number.trim());
+    if (cowNumber.includes('.')) {
+      Alert.alert("Tarkista korvanumero", "Korvanumeron pituus on 4 ja se saa sisältää ainoastaan numeroita.", [{ text: "OK" }]);
+      return false;
+    }
     if (cowNumber.length === 4) {
       if (!isNaN(Number(cowNumber))) {
         return true; // number format is correct (four numbers)
