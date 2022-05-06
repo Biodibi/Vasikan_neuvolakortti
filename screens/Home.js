@@ -143,9 +143,9 @@ export default function Home({ navigation, route }) {
       db.ref(ROOT_REF).orderByChild('number').on('value', querySnapShot => {
         let data = querySnapShot.val() ? querySnapShot.val(): {};
         for (let item in data) {
-          if (item === null) {
-            delete data[null]     // if there are null values in db, they arent taken into account
-          }}
+          if (item === 'null') {
+            delete data['null']     // if there are 'null' values in db, they arent taken into account
+            }}                      // where 'null' comes from is unknown
         let cows = {...data};
         setCowList(cows);
         setDbReady(true);
