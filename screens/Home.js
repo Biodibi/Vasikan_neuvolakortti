@@ -128,6 +128,7 @@ export default function Home({ navigation, route }) {
 
   useEffect(() => {
     if (loadingStatus) {
+      //retrieving custom settings 
       db.ref(settings).on('value', querySnapShot => {
         let data = querySnapShot.val() ? querySnapShot.val() : null;
         if (data) {
@@ -138,6 +139,7 @@ export default function Home({ navigation, route }) {
         }
       });
       setCountReady(true);
+      // retrieving cow data
       db.ref(ROOT_REF).orderByChild('number').on('value', querySnapShot => {
         let data = querySnapShot.val() ? querySnapShot.val(): {};
         for (let item in data) {
