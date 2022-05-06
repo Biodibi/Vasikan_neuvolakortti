@@ -32,14 +32,14 @@ export default function Home({ navigation, route }) {
   const [voiceText, setVoiceText] = useState('');
 
   // Microphone toggler considerably shortens the speech input time  for some reason
-  // const toggleSwitch = () => setMicActive(previousState => !previousState); {
-  //     if (micActive) {
-  //         startRecording()
-  //     }if (!micActive) {
-  //         // Voice.stop()
-  //         Voice.destroy().then(Voice.removeAllListeners);
-  //     }
-  //   }
+  const toggleSwitch = () => setMicActive(previousState => !previousState); {
+      if (micActive) {
+          startRecording()
+      }if (!micActive) {
+          // Voice.stop()
+          Voice.destroy().then(Voice.removeAllListeners);
+      }
+    }
 
   const commands = [
     {
@@ -97,7 +97,7 @@ export default function Home({ navigation, route }) {
   }
 
   async function startRecording() {
-    setMicActive(true)
+    // setMicActive(true)
     try {
       await Voice.start('fi-FI'
         , {
@@ -278,7 +278,7 @@ export default function Home({ navigation, route }) {
 
 
         <CameraFAB title="Camera" onPress={() => navigation.navigate('Camera')} />
-        <MicFAB status="active" title={micActive ? "microphone-on" : "microphone-off"} onPress={startRecording} />
+        <MicFAB status="active" title={micActive ? "microphone-on" : "microphone-off"} onPress={toggleSwitch} />
       </View>
     </TouchableWithoutFeedback>
   )
