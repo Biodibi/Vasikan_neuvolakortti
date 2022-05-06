@@ -31,37 +31,48 @@ export default function Home({ navigation, route }) {
   const [keyboardStatus, setKeyboardStatus] = useState(true);
 
   const [microphoneOn, setMicrophoneOn] = useState(false);
-
-  const toggleSwitch = () => setMicrophoneOn(previousState => !previousState); {
-    if (microphoneOn) {
-      Voice.start('fi-FI', 
-      { EXTRA_MAX_RESULTS: 100,
-        EXTRA_PARTIAL_RESULTS: true,
-        EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS: 900000,
-        EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 900000,
-        EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS: 900000})
-    }if (!microphoneOn) {
-      Voice.stop()
-      Voice.destroy().then(Voice.removeAllListeners);
-    }
-  }
-
   const [voiceText, setVoiceText] = useState('');
+
+  // Microphone toggler considerably shortens the speech input time  for some reason
+  // const toggleSwitch = () => setMicActive(previousState => !previousState); {
+  //     if (micActive) {
+  //         startRecording()
+  //     }if (!micActive) {
+  //         // Voice.stop()
+  //         Voice.destroy().then(Voice.removeAllListeners);
+  //     }
+  //   }
+
   const commands = [
     {
-      command: "numero",
+      command: "numero"
     },
     {
-      command: "nimi",
+      command: "Numero"
     },
     {
-      command: "ruumiinlämpö",
+      command: "nimi"
+    },
+    {
+      command: "Nimi"
+    },
+    {
+      command: "lämpö",
+    },
+    {
+      command: "Lämpö",
     },
     {
       command: "toimenpide",
     },
     {
+      command: "Toimenpide",
+    },
+    {
       command: "takaisin",
+    },
+    {
+      command: "tallenna",
     },
   ];
 
@@ -92,24 +103,24 @@ export default function Home({ navigation, route }) {
   }
 
   const onSpeechPartialResultsHandler = (e) => {
-    setVoiceText((e.value[0]).toLocaleLowerCase())
+    setVoiceText(e.value[0])
     commands.forEach((item) => {
       if ((e.value[0]).includes(item.command)) {
-        if (item.command == "numero") {
+        if (item.command == "numero" || item.command == "Numero") {
           setCowNumber((e.value[0]).replace(item.command, " ").trim())
-        } if (item.command == "nimi") {
+        } if (item.command == "nimi" || item.command == "Nimi") {
           setCowName((e.value[0]).replace(item.command, " ").trim())
-        } if (item.command == "ruumiinlämpö") {
+        } if (item.command == "lämpö" || item.command == "Lämpö") {
           setTemperature((e.value[0]).replace(item.command, " ").trim())
-        } if (item.command == "toimenpide") {
+        } if (item.command == "toimenpide" || item.command == "Toimenpide") {
           setProcedure((e.value[0]).replace(item.command, " ").trim())
+        } if (item.command == "tallenna") {
+          addNewCow()
         } if (item.command == "takaisin") {
           navigation.navigate('Home')
-          // Voice.stop()
-          // Voice.destroy().then(Voice.removeAllListeners)
         }
       }
-      console.log(voiceText)
+      console.log('partial', e)
     });
   }
 
@@ -117,10 +128,20 @@ export default function Home({ navigation, route }) {
     console.log("speech result handler", e)
   }
 
-  const startRecording = async () => {
-    setMicActive(true);
+  async function startRecording() {
+    setMicActive(true)
     try {
       await Voice.start('fi-FI')
+    } catch (error) {
+      console.log("error", error)
+      Voice.destroy().then(Voice.removeAllListeners);
+    }
+  }
+  async function stopRecording() {
+    // setMicActive(false)
+    try {
+      await Voice.stop()
+      Voice.destroy().then(Voice.removeAllListeners);
     } catch (error) {
       console.log("error", error)
     }
@@ -282,7 +303,7 @@ export default function Home({ navigation, route }) {
 
 
 
-        <MicFAB status="active" title={micActive? "microphone-on" : "microphone-off"} onPress={startRecording} />
+        <MicFAB status="active" title={micActive ? "microphone-on" : "microphone-off"} onPress={startRecording} />
       </View>
     </TouchableWithoutFeedback>
 
