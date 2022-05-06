@@ -66,6 +66,9 @@ export default function Individual({ navigation, route }) {
         {
             command: "poista",
         },
+        {
+            command: "Poista",
+        },
     ];
 
     useEffect(() => {
