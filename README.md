@@ -4,7 +4,7 @@ Vasikan neuvolakortti -sovellus on tarkoitettu vasikoiden terveydentilan seurant
 
 ![Vasikoiden listaus](https://github.com/Biodibi/vasikan_neuvolakortti/blob/master/images/vasikan_neuvolakortti_listaus.png)
 
-Asetuksissa voidaan asettaa lämpötilan ala- ja ylärajat, minkä perusteella vasikka voidaan määritellä sairaaksi. 
+Asetuksissa voidaan asettaa lämpötilan ala- ja ylärajat, minkä perusteella vasikka voidaan määritellä sairaaksi. Asetuksiin on myös toteutettu tietokannan tyhjennystoiminto testausta varten.
 
 ![Asetukset](https://github.com/Biodibi/vasikan_neuvolakortti/blob/master/images/vasikan_neuvolakortti_asetukset.png)
 
