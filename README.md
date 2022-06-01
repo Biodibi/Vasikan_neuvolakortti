@@ -20,7 +20,7 @@ Yksittäisen vasikan tiedot saadaan esille valitsemalla vasikka etusivun listalt
 
 ## Sovelluksen toteutuksessa käytetyt tekniikat
 
-Vasikan neuvolakortti on toteutettu React Nativen versiolla 17 CLI sovelluksena. Lisätietoa tarvittavasta [ympäristöstä] (https://reactnative.dev/docs/environment-setup)
+Vasikan neuvolakortti on toteutettu React Nativen versiolla 17 CLI sovelluksena. Lisätietoa tarvittavasta [ympäristöstä](https://reactnative.dev/docs/environment-setup)
 
 Tietokanta on toteutettu käyttämällä [Firebasea](https://firebase.google.com). Sovellusta varten tulee siis luoda tyhjä Realtime database ja konfiguroida tämä sovellus käyttämään sitä.
 
