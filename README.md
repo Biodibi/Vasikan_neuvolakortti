@@ -14,4 +14,4 @@ Etusivulla voi valita listauksen sairaista vasikoista.
 
 Yksittäisen vasikan tiedot saadaan esille valitsemalla vasikka etusivun listalta, käyttämällä hakutoimintoa tai skannaamalla korvamerkki.  Sovellus kuuntelee myös äänikomentoja eli vasikan tiedot voidaan etsiä ja tietoja syöttää äänikomentojen avulla.
 
-![Vasilan lisäys](https://github.com/Biodibi/vasikan_neuvolakortti/blob/master/images/vasikan_neuvolakortti_lisäys.png)
+![Vasilan lisäys](https://github.com/Biodibi/vasikan_neuvolakortti/blob/master/images/vasilan_neuvolakortti_lisäys.png)
