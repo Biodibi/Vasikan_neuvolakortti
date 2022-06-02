@@ -24,3 +24,6 @@ Vasikan neuvolakortti on toteutettu React Nativen versiolla 17 CLI sovelluksena.
 
 Tietokanta on toteutettu käyttämällä [Firebasea](https://firebase.google.com). Sovellusta varten tulee siis luoda tyhjä Realtime database ja konfiguroida tämä sovellus käyttämään sitä editoimalla firebase-kansiossa olevaa Config.js-tiedostoa.
 
+## Lisenssi
+
+Tämän projektin lähdekoodi on lisenssoitu MIT-lisenssillä. Katso lisenssin tiedot tarkemmin [LICENSE](https://github.com/Biodibi/vasikan_neuvolakortti/blob/master/LICENSE.md) tiedostosta. Mikäli sovelluksessa on käytetty kolmannen osapuolen työkaluja, komponentteja tai vastaavia, noudetaan niiden osalta ilmoitettuja lisenssiehtoja.
